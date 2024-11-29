@@ -24,6 +24,11 @@ model User {
   publishedPost Post[] @relation("PublishedPost")
   createdPost Post[] @relation("CreatedPost")
   updatedPost Post[] @relation("UpdatedPost")
+  createdComment Comment[] @relation("CreatedComment")
+  deletedComment Comment[] @relation("DeletedComment")
+  createdTag Tag[] @relation("CreatedTag")
+  updatedTag Tag[] @relation("UpdatedTag")
+  deletedTag Tag[] @relation("DeletedTag")
 }
 
 model Post {
@@ -36,10 +41,39 @@ model Post {
   publishedAt DateTime
   publishedBy User @relation("PublishedPost", fields: [publishedById], references: [id])
   publishedById Int
-  createdAt DateTime
+  createdAt DateTime @default(now())
   createdByUser User @relation("CreatedPost",fields: [createdById], references: [id])
   createdById Int
   updatedAt DateTime
   updatedByUser User @relation("UpdatedPost",fields: [updatedById], references: [id])
   updatedById Int
+  comment Comment[] @relation("PostComment")
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+  comment String
+  postId Int
+  post Post @relation("PostComment", fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  createdByUser User @relation("CreatedComment", fields: [createdById], references: [id])
+  createdById Int
+  deletedAt DateTime
+  deletedById Int
+  DeletedByUser User @relation("DeletedComment", fields: [deletedById], references: [id]) //admin only
+}
+
+model Tag {
+  id Int @id @default(autoincrement())
+  name String
+  createdAt DateTime @default(now())
+  createdByUser User @relation("CreatedTag",fields: [createdById], references: [id])
+  createdById Int
+  updatedAt DateTime
+  updatedByUser User @relation("UpdatedTag",fields: [updatedById], references: [id])
+  updatedById Int
+  deletedAt DateTime
+  deletedById Int
+  DeletedByUser User @relation("DeletedTag", fields: [deletedById], references: [id]) //admin only
+
 }
