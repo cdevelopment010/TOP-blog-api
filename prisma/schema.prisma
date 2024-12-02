@@ -57,8 +57,8 @@ model Comment {
   postId Int
   post Post @relation("PostComment", fields: [postId], references: [id])
   createdAt DateTime @default(now())
-  createdByUser User @relation("CreatedComment", fields: [createdById], references: [id])
-  createdById Int
+  createdByUser User? @relation("CreatedComment", fields: [createdById], references: [id])
+  createdById Int?
   deletedAt DateTime
   deletedById Int
   DeletedByUser User @relation("DeletedComment", fields: [deletedById], references: [id]) //admin only

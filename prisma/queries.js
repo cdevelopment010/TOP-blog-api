@@ -14,13 +14,66 @@ exports.createUser = async (user) => {
     })
 }
 
-//Update user
-//Set as admin
-//remove admin
-//delete user
-//get user by Id
+exports.updateUser = async (user) => {
+    return await prisma.user.update({
+        where: {
+            id: user.id
+        }, 
+        data: {
+            name: user.name,
+            email: user.email,
+            password: user.password, 
+            admin: user.admin
+        }
+    })
+}
 
+exports.setUserAsAdmin = async (userId, updatedById) => {
+    return await prisma.user.update({
+        where: {
+            id: userId
+        }, 
+        data: {
+            admin: true, 
+            updatedAt: new Date(), 
+            updatedById: updatedById
+        }
+    })
+}
 
+exports.removeUserAsAdmin = async (userId, updatedById) => {
+    return await prisma.user.update({
+        where: {
+            id: userId
+        }, 
+        data: {
+            admin: false, 
+            updatedAt: new Date(), 
+            updatedById: updatedById
+        }
+    })
+}
+
+exports.deleteUserById = async (userId) => {
+    await prisma.user.delete({
+        where: {
+            id: userId
+        },
+        include: {
+            post: true, 
+            comment: true,
+            tag: true
+        }
+    })
+}
+
+exports.findUserById = async(userId) => {
+    return await prisma.user.findFirst({
+        where: {
+            id: userId
+        }
+    })
+}
 
 //Posts
 exports.createPost = async (post) => {
