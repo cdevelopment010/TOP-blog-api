@@ -141,6 +141,26 @@ exports.deletePost = async (postId) => {
     })
 }
 
-//get post by id
-//get post by author? 
-//get post by tag
+exports.findPostById = async (postId) => {
+    return await prisma.post.findFirst({
+        where: {
+            id: postId
+        }
+    })
+}
+
+exports.findPostByAuthor = async (authorId) => {
+    return await prisma.post.findMany({
+        where: {
+            createdById: authorId
+        }
+    })
+}
+
+exports.findPostByTag = async (tagId) => {
+    return await prisma.post.findMany({
+        where: {
+            tagId: tagId
+        }
+    })
+}

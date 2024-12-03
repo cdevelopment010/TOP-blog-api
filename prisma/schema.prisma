@@ -38,10 +38,10 @@ model Post {
   content String
   numberOfViews Int @default(0)
   numberOfShares Int @default(0)
-  published Boolean
-  publishedAt DateTime
-  publishedBy User @relation("PublishedPost", fields: [publishedById], references: [id])
-  publishedById Int
+  published Boolean @default(false)
+  publishedAt DateTime?
+  publishedBy User? @relation("PublishedPost", fields: [publishedById], references: [id])
+  publishedById Int?
   createdAt DateTime @default(now())
   createdByUser User @relation("CreatedPost",fields: [createdById], references: [id])
   createdById Int
@@ -49,6 +49,9 @@ model Post {
   updatedByUser User @relation("UpdatedPost",fields: [updatedById], references: [id])
   updatedById Int
   comment Comment[] @relation("PostComment")
+  TagId Int
+  Tag Tag @relation("PostTag", fields:[TagId], references:[id])
+
 }
 
 model Comment {
@@ -76,5 +79,5 @@ model Tag {
   deletedAt DateTime
   deletedById Int
   DeletedByUser User @relation("DeletedTag", fields: [deletedById], references: [id]) //admin only
-
+  PostTag Post[] @relation("PostTag")
 }
