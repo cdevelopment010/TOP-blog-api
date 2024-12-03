@@ -17,7 +17,7 @@ exports.createUser = async (user) => {
 exports.updateUser = async (user) => {
     return await prisma.user.update({
         where: {
-            id: user.id
+            id: parseInt(user.id)
         }, 
         data: {
             name: user.name,
@@ -31,7 +31,7 @@ exports.updateUser = async (user) => {
 exports.setUserAsAdmin = async (userId, updatedById) => {
     return await prisma.user.update({
         where: {
-            id: userId
+            id: parseInt(userId)
         }, 
         data: {
             admin: true, 
@@ -44,7 +44,7 @@ exports.setUserAsAdmin = async (userId, updatedById) => {
 exports.removeUserAsAdmin = async (userId, updatedById) => {
     return await prisma.user.update({
         where: {
-            id: userId
+            id: parseInt(userId)
         }, 
         data: {
             admin: false, 
@@ -57,7 +57,7 @@ exports.removeUserAsAdmin = async (userId, updatedById) => {
 exports.deleteUserById = async (userId) => {
     await prisma.user.delete({
         where: {
-            id: userId
+            id: parseInt(userId)
         },
         include: {
             post: true, 
@@ -70,7 +70,7 @@ exports.deleteUserById = async (userId) => {
 exports.findUserById = async(userId) => {
     return await prisma.user.findFirst({
         where: {
-            id: userId
+            id: parseInt(userId)
         }
     })
 }
@@ -93,7 +93,7 @@ exports.createPost = async (post) => {
 exports.updatePost = async (post) => {
     return await prisma.post.update({
         where: {
-            id: id
+            id: parseInt(post.id)
         }, 
         data: {
             title: post.title,
@@ -111,7 +111,7 @@ exports.updatePost = async (post) => {
 exports.hidePost = async (postId) => {
     return await prisma.post.update({
         where: {
-            id: postId
+            id: parseInt(postId)
         },
         data: {
             published: false,
@@ -123,7 +123,7 @@ exports.hidePost = async (postId) => {
 exports.showPost = async (postId, userId) => {
     return await prisma.post.update({
         where: {
-            id: postId
+            id: parseInt(postId)
         },
         data: {
             published: true,
@@ -136,7 +136,7 @@ exports.showPost = async (postId, userId) => {
 exports.deletePost = async (postId) => {
     await prisma.post.delete({
         where: {
-            id: postId
+            id: parseInt(postId)
         }
     })
 }
@@ -144,7 +144,7 @@ exports.deletePost = async (postId) => {
 exports.findPostById = async (postId) => {
     return await prisma.post.findFirst({
         where: {
-            id: postId
+            id: parseInt(postId)
         }
     })
 }
@@ -152,7 +152,7 @@ exports.findPostById = async (postId) => {
 exports.findPostByAuthor = async (authorId) => {
     return await prisma.post.findMany({
         where: {
-            createdById: authorId
+            createdById: parseInt(authorId)
         }
     })
 }
@@ -160,7 +160,7 @@ exports.findPostByAuthor = async (authorId) => {
 exports.findPostByTag = async (tagId) => {
     return await prisma.post.findMany({
         where: {
-            tagId: tagId
+            tagId: parseInt(tagId)
         }
     })
 }
