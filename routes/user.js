@@ -1,14 +1,11 @@
 const {Router} = require("express"); 
 const router = Router(); 
-const userControler = require("../controllers/userController");
+const userController = require("../controllers/userController");
 
-router.get("/:userId", userControler.getUserById)
-router.post("/", (req, res) => {
-    res.send("Post User")
-})
-router.delete("/:userId", (req, res) => {
-    const { userId } = req.params;
-    res.send("Delete User")
-})
+router.get("/:userId", userController.getUserById)
+router.post("/", userController.createUser)
+router.delete("/:userId", userController.deleteUser)
+router.put("/:userId/admin/add", userController.addUserAdmin);
+router.put("/:userId/admin/delete", userController.removeUserAdmin);
 
 module.exports = router;
