@@ -34,7 +34,7 @@ const createUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
     const { userId } = req.params;
     try { 
-        const deletedUser = await deleteUserById(userId); 
+        const deletedUser = await db.deleteUserById(userId); 
         res.sendStatus(200); 
         return true; 
     } catch(err) {

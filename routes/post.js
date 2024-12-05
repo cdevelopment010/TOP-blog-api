@@ -1,26 +1,18 @@
 const {Router} = require("express"); 
 const router = Router(); 
+const controller = require("../controllers/postController");
 
-router.get("/", (req, res) => {
-    res.send("Get Posts")
-})
-router.post("/", (req, res) => {
-    res.send("Post Posts")
-})
-router.delete("/:postId", (req, res) => {
-    const { postId } = req.params;
-    res.send("Delete Posts")
-})
+router.get("/:postId", controller.getPostById);
+router.post("/", controller.createPost);
+router.delete("/:postId", controller.deletePost);
+router.put("/:postId", controller.updatePost);
 
-router.get("/:postId/Comments", (req, res) => {
-    res.send("Get Post Comments")
-})
-router.post("/:postId/Comments", (req, res) => {
-    res.send("Post Post Comments")
-})
-router.delete("/:postId/Comments/:commentId", (req, res) => {
-    const { postId, commentId } = req.params;
-    res.send("Delete Post Comment")
-})
+router.get("/author/:authorId", controller.getPostByAuthor);
+router.get("/tag/:tagId", controller.getPostByTag);
+
+router.get("/:postId/Comments/:commentId", controller.getCommentById);
+router.post("/:postId/Comments", controller.createComment);
+router.delete("/:postId/Comments/:commentId", controller.deleteCommentById);
+router.put("/:postId/Comments/:commentId", controller.updateCommentById);
 
 module.exports = router;

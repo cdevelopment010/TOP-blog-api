@@ -108,7 +108,7 @@ exports.updatePost = async (post) => {
 }
 
 
-exports.hidePost = async (postId) => {
+exports.hidePost = async (postId, userId) => {
     return await prisma.post.update({
         where: {
             id: parseInt(postId)
@@ -117,6 +117,8 @@ exports.hidePost = async (postId) => {
             published: false,
             publishedAt: null,
             publishedById: null,
+            updatedById: userId,
+            updatedAt: new Date()
         }
     })
 }
