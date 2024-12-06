@@ -166,3 +166,52 @@ exports.findPostByTag = async (tagId) => {
         }
     })
 }
+
+//Comments
+exports.findCommentById = async (commentId) => {
+    return await prisma.comment.findFirst({
+        where: { 
+            id: commentId,
+        }
+    })
+}
+
+exports.findCommentByPost = async (postId) => {
+    return await prisma.comment.findMany({
+        where: {
+            postId: postId
+        }
+    })
+}
+
+exports.createComment = async (comment) => {
+    return await prisma.comment.create({
+        data: { 
+            createdById: comment.createdById, 
+            postId: comment.postId,
+            comment: comment.comment,
+        }
+    })
+}
+
+exports.updateComment = async (comment) => {
+    return await prisma.comment.create({
+        where: {
+            id: comment.id
+        },
+        data: { 
+            postId: comment.postId,
+            comment: comment.comment,
+            updatedById: comment.updatedById,
+            updatedAt: new Date()
+        }
+    })
+}
+
+exports.deleteCommentById = async(commentId) => {
+    return await prisma.comment.delete({
+        where: {
+            id: commentId
+        }
+    })
+}

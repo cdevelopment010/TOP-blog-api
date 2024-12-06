@@ -115,8 +115,30 @@ const deletePost = async(req, res, next) => {
 
 
 ///Comments
+const getCommentsByPost = async(req, res, next) => {
+    const {postId} = req.params; 
+
+    try {
+        const comments = await db.findCommentByPost(postId); 
+        res.sendStatus(200); 
+        return comments; 
+    } catch (err) {
+        console.log(err); 
+        return next(err);
+    }
+}
+
 const getCommentById = async(req, res, next) => {
-    
+    const {commentId, postId} = req.params; 
+
+    try {
+        const comment = await db.findCommentById(commentId); 
+        res.sendStatus(200); 
+        return comment; 
+    } catch (err) {
+        console.log(err); 
+        return next(err);
+    }
 }
 const createComment = async(req, res, next) => {
 
