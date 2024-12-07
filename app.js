@@ -1,6 +1,8 @@
 const express = require("express")
+const jwt = require("jsonwebtoken");
 const app = express(); 
 const PORT = process.env.PORT || 3000;
+
 
 const indexRouter = require("./routes/index");
 const postRouter = require("./routes/post");
