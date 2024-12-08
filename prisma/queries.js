@@ -74,6 +74,13 @@ exports.findUserById = async(userId) => {
         }
     })
 }
+exports.findUserByEmail = async(userEmail) => {
+    return await prisma.user.findFirst({
+        where: {
+            email: userEmail
+        }
+    })
+}
 
 //Posts
 exports.createPost = async (post) => {
