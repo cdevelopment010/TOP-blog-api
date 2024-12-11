@@ -2,6 +2,7 @@ const {body, validationResult} = require("express-validator");
 const db = require("../prisma/queries"); 
 const bcrypt = require("bcryptjs/dist/bcrypt");
 const jwt = require('jsonwebtoken');
+const SECRET_KEY = process.env.SECRET_KEY || 'secret-key'
 
 const userValidationCreate = [
     body("email")
@@ -65,7 +66,7 @@ const createUser = [
             user.password = hashedPassword; 
             try { 
                 const created = await db.createUser(user);
-                jwt.sign({user: user}, secretKey, function(err, token) {
+                jwt.sign({user: user}, SECRET_KEY, function(err, token) {
                     if (err) {
                         return next(err); 
                     }
