@@ -1,4 +1,26 @@
+const { body, validationResult } = require("express-validator");
 const db = require("../prisma/queries"); 
+const bcrypt = require("bcryptjs/dist/bcrypt");
+
+const userValidationCreate = [
+    body("email")
+        .isEmail().withMessage("Email must be a valid email")
+        .isLength({min: 3}).withMessage("Email must be at least 3 characters long")
+        .custom(async value => {
+            const user = await db.getUserByEmail(value); 
+            if (user) {
+                throw new Error("This email is already in use")
+            }
+        }), 
+    body("password")
+        .isStrongPassword({
+            minLength: 8
+        }).withMessage("Password must contain at least 8 character, 1 lower case letter, 1 upper case letter, 1 number and 1 symbol")
+        .isLength({min: 3}).withMessage("Password must be at least 3 characters"),
+    body("confirmPassword").custom((value, { req}) => {
+        return value == req.body.password;
+    }).withMessage("Passwords must match")
+]
 
 const getUserById = async (req, res) => {
     const { userId } = req.params;
@@ -14,26 +36,48 @@ const getUserById = async (req, res) => {
     });
 }
 
-const createUser = async (req, res, next) => {
-    const user = { 
-        email: req.body.email,
-        password: req.body.password,
-        name: req.body.name,
-        admin: req.body.admin
-    }
+const createUser = [ 
+    userValidationCreate, 
+    async (req, res, next) => {
+        const user = { 
+            email: req.body.email,
+            password: req.body.password,
+            name: req.body.name,
+            admin: req.body.admin
+        }
 
-    try { 
-        const created = await db.createUser(user); 
-        return res.status(200).json({
-            success: true, 
-            message: 'User created successfully',
-            data: created
+        const errors = validationResult(); 
+
+        if (!errors.isEmpty()) { 
+            return res.status(400).json({
+                success: false, 
+                message: errors.array(), 
+                data: user,
+            })
+        }
+
+        bcrypt.hash(req.body.password, 15, async(err, hashedPassword) => {
+            if (err) { 
+                return next(err); 
+            }
+
+            user.password = hashedPassword; 
+            try { 
+                const created = await db.createUser(user); 
+                return res.status(200).json({
+                    success: true, 
+                    message: 'User created successfully',
+                    data: created
+                })
+            } catch(err) {
+                console.error(err); 
+                return next(err)
+            }
+
         })
-    } catch(err) {
-        console.error(err); 
-        return next(err)
+
     }
-}
+]
 
 const deleteUser = async (req, res, next) => {
     const { userId } = req.params;
