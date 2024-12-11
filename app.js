@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const passport = require("./config/passport");
-const cors = reqiore("cors");
+const cors = require("cors");
 const app = express(); 
 const PORT = process.env.PORT || 3000;
 
