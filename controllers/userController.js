@@ -8,7 +8,7 @@ const userValidationCreate = [
         .isEmail().withMessage("Email must be a valid email")
         .isLength({min: 3}).withMessage("Email must be at least 3 characters long")
         .custom(async value => {
-            const user = await db.getUserByEmail(value); 
+            const user = await db.findUserByEmail(value); 
             if (user) {
                 throw new Error("This email is already in use")
             }
