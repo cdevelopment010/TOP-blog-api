@@ -7,9 +7,11 @@ const getUserById = async (req, res) => {
         return res.sendStatus(404); 
     } 
     const user = await db.findUserById(userId); 
-    res.sendStatus(200);
-    console.log(user);
-    return user; 
+    return res.status(200).json({
+        success: true, 
+        message: 'Get user successfully', 
+        data: user
+    });
 }
 
 const createUser = async (req, res, next) => {
@@ -22,9 +24,11 @@ const createUser = async (req, res, next) => {
 
     try { 
         const created = await db.createUser(user); 
-        res.sendStatus(200)
-        return created;
-
+        return res.status(200).json({
+            success: true, 
+            message: 'User created successfully',
+            data: created
+        })
     } catch(err) {
         console.error(err); 
         return next(err)
@@ -35,8 +39,11 @@ const deleteUser = async (req, res, next) => {
     const { userId } = req.params;
     try { 
         const deletedUser = await db.deleteUserById(userId); 
-        res.sendStatus(200); 
-        return true; 
+        return res.status(200).json({
+            success: true, 
+            message: 'User deleted successfully',
+            data: deletedUser
+        }); 
     } catch(err) {
         console.error(err); 
         return next(err); 
@@ -54,7 +61,11 @@ const updateUser = async (req, res, next) => {
     }
     try { 
         const userUpdated = await db.updateUser(user);  
-        return userUpdated; 
+        return res.status(200).json({
+            success: true, 
+            message: 'User updated successfully',
+            data: userUpdated
+            }); 
     } catch (err) { 
         console.error(err); 
         return next(err); 
@@ -66,7 +77,11 @@ const addUserAdmin = async (req, res, next) => {
 
     try { 
         const user = await db.setUserAsAdmin(userId, currentUser.id); 
-        return user; 
+        return res.status(200).json({
+            success: true, 
+            message: 'User set as admin successfully',
+            data: user
+        }); 
     } catch(err) {
         console.error(err); 
         return next(err); 
@@ -78,7 +93,11 @@ const removeUserAdmin = async (req, res, next) => {
 
     try { 
         const user = await db.setUserAsAdmin(userId, currentUser.id); 
-        return user; 
+        return res.status(200).json({
+            success: true, 
+            message: 'User removed as admin successfully',
+            data: user
+        });  
     } catch(err) {
         console.error(err); 
         return next(err); 
