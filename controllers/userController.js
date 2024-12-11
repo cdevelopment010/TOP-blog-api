@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const {body, validationResult} = require("express-validator"); 
 const db = require("../prisma/queries"); 
 const bcrypt = require("bcryptjs/dist/bcrypt");
 const jwt = require('jsonwebtoken');
@@ -47,7 +47,7 @@ const createUser = [
             admin: req.body.admin
         }
 
-        const errors = validationResult(); 
+        const errors = validationResult(req); 
 
         if (!errors.isEmpty()) { 
             return res.status(400).json({
