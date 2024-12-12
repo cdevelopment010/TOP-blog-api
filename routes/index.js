@@ -3,15 +3,14 @@ const jwt = require("jsonwebtoken");
 const userMiddleware = require("../middleware/user"); 
 const router = Router(); 
 const SECRET_KEY = process.env.SECRET_KEY || 'secret-key'
-const controller = require("../controllers/index")
+const userController = require("../controllers/userController"); 
 
 
 router.get("/", (req, res) => {
     res.send("HOME!");
 })
-router.post("/signup",controller.postSignUpUser)
-
-router.get("/login", controller.postSignInUser)
+router.post("/signup",userController.createUser)
+router.get("/login", userController.postSignInUser)
 
 router.get("/Tags", userMiddleware.verifyToken, (req, res) => {
     jwt.verify(req.token, SECRET_KEY, (err, authData) => {

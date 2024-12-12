@@ -24,6 +24,54 @@ const userValidationCreate = [
     }).withMessage("Passwords must match")
 ]
 
+
+const userValidationSignIn = [
+    body("email")
+        .isEmail().withMessage("Email must be of type email")
+        .isLength({ min: 3 }).withMessage("Email must be at least 3 characters")
+]
+
+
+const postSignInUser = [
+    userValidationSignIn, 
+    async (req, res, next) => {
+        const user = { email: req.body.email}
+
+        const errors = validationResult(req); 
+        if (!errors.isEmpty()) {
+            return res.sendStatus(400);
+        }
+
+        passport.authenticate("local", (err, user, info) => {
+            if (err) {return next(err)}
+            if (!user) {
+                let errors = [{msg: info.message}]
+                return res.sendStatus(400).message(errors); 
+            }
+
+            req.login(user, async(err)=> {
+                if (err) { return next(err)}
+                await db.findUserByEmail(user.email)
+                    .then((user) => {
+                        jwt.sign({user: user}, SECRET_KEY, {expiresIn: '1h'},  (err, token) => {
+                            return res.json({
+                                token: token,
+                                user: user
+                            })
+                        })
+                        //front end should save token to local storage
+                        // return user; 
+                    })
+                    .catch(err => {
+                        console.error(err); 
+                        return next(err)
+                    })
+            })
+        })(req, res, next);
+    }
+] 
+
+
 const getUserById = async (req, res) => {
     const { userId } = req.params;
     console.log(userId);
@@ -66,7 +114,7 @@ const createUser = [
             user.password = hashedPassword; 
             try { 
                 const created = await db.createUser(user);
-                jwt.sign({user: user}, SECRET_KEY, function(err, token) {
+                jwt.sign({user: user}, SECRET_KEY, {expiresIn: '1d'}, function(err, token) {
                     if (err) {
                         return next(err); 
                     }
@@ -163,5 +211,6 @@ module.exports = {
     deleteUser, 
     updateUser,
     addUserAdmin, 
-    removeUserAdmin
+    removeUserAdmin,
+    postSignInUser
 }
