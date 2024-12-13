@@ -11,7 +11,7 @@ passport.use(
         },
         async (email, password, done) => {
             try {
-                const user = await db.getUserByEmail(email);
+                const user = await db.findUserByEmail(email);
                 if (!user) {
                     return done(null, false, { message: "Incorrect email" });
                 }
