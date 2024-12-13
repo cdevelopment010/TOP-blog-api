@@ -15,6 +15,7 @@ app.use(cors({
 const indexRouter = require("./routes/index");
 const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
+const authRouter = require("./routes/auth");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -29,5 +30,6 @@ app.use(passport.session());
 app.use("/", indexRouter);
 app.use("/post", postRouter);
 app.use("/user", userRouter);
+app.use("/auth", authRouter); 
 
 app.listen(PORT, () => {console.log(`App listening on port ${PORT}`)});
