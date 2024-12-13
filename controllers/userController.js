@@ -54,7 +54,7 @@ const postSignInUser = [
                 await db.findUserByEmail(user.email)
                     .then((user) => {
                         jwt.sign({user: user}, SECRET_KEY, {expiresIn: '1h'},  (err, token) => {
-                            return res.json({
+                            return res.status(200).json({
                                 token: token,
                                 user: user
                             })

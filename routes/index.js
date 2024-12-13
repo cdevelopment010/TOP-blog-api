@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
     res.send("HOME!");
 })
 router.post("/signup",userController.createUser)
-router.get("/login", userController.postSignInUser)
+router.post("/login", userController.postSignInUser)
 
 router.get("/Tags", userMiddleware.verifyToken, (req, res) => {
     jwt.verify(req.token, SECRET_KEY, (err, authData) => {
