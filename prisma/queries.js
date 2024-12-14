@@ -222,3 +222,45 @@ exports.deleteCommentById = async(commentId) => {
         }
     })
 }
+
+
+//tags
+exports.createTag = async (tag) => {
+    return await prisma.tag.create({
+        data: { 
+            name: tag.name, 
+            createdById: tag.createdById, 
+            createdAt: new Date(),
+        }
+    })
+}
+exports.findAllTags = async () => {
+    return await prisma.tag.findMany();
+}
+exports.findTagById = async (tagId) => {
+    return await prisma.tag.findUnique({
+        where: {
+            id: parseInt(tagId)
+        }
+    })
+}
+exports.updateTag = async (tag) => {
+    return await prisma.tag.update({
+        where: {
+            id: parseInt(tag.id)
+        },
+        data: {
+            name: tag.name,
+            updatedAt: new Date(), 
+            updatedById: tag.updatedById  
+        }
+    })
+}
+
+exports.deleteTagById = async (tagId) => {
+    return await prisma.tag.delete({
+        where: {
+            id: parseInt(tagId)
+        }
+    })
+}
