@@ -67,8 +67,8 @@ const createTag = [
             } else { 
                 const tag = {
                     name: req.body.name, 
-                    createById: req.currentUser.id, 
-                    updatedById: req.currentUser.id,
+                    createById: req.body.currentUser.id, 
+                    updatedById: req.body.currentUser.id,
                     deletedAt: null,
                 }
                 const errors = validationResult(req);
