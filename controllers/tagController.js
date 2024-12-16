@@ -67,7 +67,7 @@ const createTag = [
             } else { 
                 const tag = {
                     name: req.body.name, 
-                    createById: currentUser.id
+                    createById: authData.user.id
                 }
                 const errors = validationResult(req);
                 if (!errors.isEmpty()) { 
