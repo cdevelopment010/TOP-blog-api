@@ -231,6 +231,8 @@ exports.createTag = async (tag) => {
             name: tag.name, 
             createdById: tag.createdById, 
             createdAt: new Date(),
+            updatedAt: new Date(), 
+            updatedById: tag.createdById
         }
     })
 }
