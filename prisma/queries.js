@@ -150,6 +150,10 @@ exports.deletePost = async (postId) => {
     })
 }
 
+exports.findAllPosts = async () => {
+    return await prisma.post.findMany();
+}
+
 exports.findPostById = async (postId) => {
     return await prisma.post.findFirst({
         where: {

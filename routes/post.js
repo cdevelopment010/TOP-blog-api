@@ -2,6 +2,7 @@ const {Router} = require("express");
 const router = Router(); 
 const controller = require("../controllers/postController");
 
+router.get("/", controller.getAllPosts);
 router.post("/", controller.createPost);
 router.get("/:postId", controller.getPostById);
 router.delete("/:postId", controller.deletePost);

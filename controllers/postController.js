@@ -42,6 +42,30 @@ const unpublishPost = async(req, res, next) => {
     }
 }
 
+const getAllPosts = async(req, res, next) => {
+    jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
+        if(err) {
+            return res.sendStatus(403); 
+        } else { 
+            await db.findAllPosts()
+                .then(posts => {
+                    return res.status(200).json({
+                        success: true, 
+                        message: 'Posts', 
+                        data: posts
+                    })
+                })
+                .catch(err => {
+                    return res.status(400).json({
+                        success: false, 
+                        message: err.message,
+                    })
+                })
+
+        }
+    })
+}
+
 const getPostById = async(req, res, next) => {
     const { postId } = req.params;
     try { 
@@ -156,6 +180,7 @@ module.exports = {
     createPost,
     publishPost, 
     unpublishPost,
+    getAllPosts,
     getPostById,
     getPostByAuthor,
     getPostByTag,
