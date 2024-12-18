@@ -1,4 +1,5 @@
 const db = require("../prisma/queries"); 
+const jwt = require("jsonwebtoken");
 
 const createPost = async(req, res, next) => {
     const postDetail = {
