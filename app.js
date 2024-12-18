@@ -1,5 +1,6 @@
 const express = require("express");
-const session = require("express-session");
+// const session = require("express-session");
+const session = require("./config/session");
 const passport = require("./config/passport");
 const cors = require("cors");
 const app = express(); 
@@ -21,11 +22,7 @@ const tagRouter = require("./routes/tag");
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use(session({
-    secret: process.env.SESSION_SECRET || "SessionSecret",
-    resave:false,
-    saveUninitialized: false
-}));   
+app.use(session);   
 app.use(passport.session());
 
 app.use("/", indexRouter);
