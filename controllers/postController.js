@@ -1,5 +1,6 @@
 const db = require("../prisma/queries"); 
 const jwt = require("jsonwebtoken");
+const SECRET_KEY = process.env.SECRET_KEY || 'secret-key'
 
 const createPost = async(req, res, next) => {
     const postDetail = {
