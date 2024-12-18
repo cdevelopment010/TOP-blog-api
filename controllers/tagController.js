@@ -118,11 +118,7 @@ const putTagById = [
                         message: errors.array()
                     })
                 }
-                const tag = {
-                    id: req.params, 
-                    name: req.body.name, 
-                }
-                await db.updateTag(tag)
+                await db.updateTag(req.body.tag)
                     .then(tag => {
                         return res.status(200).json({
                             success: true, 
