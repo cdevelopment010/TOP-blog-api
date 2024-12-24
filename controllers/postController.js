@@ -3,12 +3,10 @@ const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY || 'secret-key'
 
 const createPost = async(req, res, next) => {
-    const postDetail = {
-        title: req.body.title, 
-        content: req.body.content,
-        createdById: req.body.currentUser.id,
-        updatedById: req.body.currentUser.id,
-    }
+    const postDetail = req.body.post; 
+
+    postDetail.createdById= req.body.currentUser.id;
+    postDetail.updatedById= req.body.currentUser.id;
 
     try { 
         const post = await db.createPost(postDetail); 
