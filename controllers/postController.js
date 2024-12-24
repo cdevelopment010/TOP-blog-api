@@ -6,8 +6,8 @@ const createPost = async(req, res, next) => {
     const postDetail = {
         title: req.body.title, 
         content: req.body.content,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
+        createdById: body.currentUser.id,
+        updatedById: body.currentUser.id,
     }
 
     try { 
