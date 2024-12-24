@@ -56,8 +56,7 @@ model Post {
   updatedByUser User? @relation("UpdatedPost",fields: [updatedById], references: [id])
   updatedById Int?
   comment Comment[] @relation("PostComment")
-  TagId Int
-  Tag Tag @relation("PostTag", fields:[TagId], references:[id])
+  tags Tag[] @relation("PostTag")
 
 }
 
@@ -78,13 +77,13 @@ model Tag {
   id Int @id @default(autoincrement())
   name String
   createdAt DateTime @default(now())
-  createdByUser User @relation("CreatedTag",fields: [createdById], references: [id])
+  createdByUser User @relation("CreatedTag", fields: [createdById], references: [id])
   createdById Int
   updatedAt DateTime @default(now())
-  updatedByUser User? @relation("UpdatedTag",fields: [updatedById], references: [id])
+  updatedByUser User? @relation("UpdatedTag", fields: [updatedById], references: [id])
   updatedById Int?
   deletedAt DateTime?
   deletedById Int?
-  DeletedByUser User? @relation("DeletedTag", fields: [deletedById], references: [id]) //admin only
+  DeletedByUser User? @relation("DeletedTag", fields: [deletedById], references: [id]) // admin only
   PostTag Post[] @relation("PostTag")
 }

@@ -5,10 +5,13 @@ const SECRET_KEY = process.env.SECRET_KEY || 'secret-key'
 const createPost = async(req, res, next) => {
     const postDetail = req.body.post; 
 
+    console.log(req.body);
+
     postDetail.createdById= req.body.currentUser.id;
     postDetail.updatedById= req.body.currentUser.id;
 
     try { 
+        console.log(postDetail);
         const post = await db.createPost(postDetail); 
         res.sendStatus(200); 
         return post; 

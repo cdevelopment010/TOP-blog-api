@@ -84,6 +84,7 @@ exports.findUserByEmail = async(userEmail) => {
 
 //Posts
 exports.createPost = async (post) => {
+    console.log("create post prisma:", post);
     return await prisma.post.create({
         data: {
             title: post.title,
@@ -91,8 +92,11 @@ exports.createPost = async (post) => {
             published: post.published,
             publishedAt: post.published ? new Date() : null,
             publishedById: post.publishedById,
-            createdById: post.createdById,
-            updatedById: post.updatedById
+            // createdById: post.createdById,
+            createdByUser: {connect: {id: post.createdById}},
+            // updatedById: post.updatedById ?? null,
+            updatedByUser: {connect: {id: post.updatedById}}, 
+            tags: {connect: post.tagId.map(tag => ({id: parseInt(tag.id)}))}
         }
     })
 }
