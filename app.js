@@ -2,6 +2,8 @@ const express = require("express");
 // const session = require("express-session");
 const session = require("./config/session");
 const passport = require("./config/passport");
+const prisma = require("./prisma/queries"); 
+
 const cors = require("cors");
 const app = express(); 
 const PORT = process.env.PORT || 3000;
@@ -30,5 +32,21 @@ app.use("/post", postRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter); 
 app.use("/tag", tagRouter);
+
+// Gracefully close Prisma on process termination
+process.on('SIGINT', async () => {
+    console.log('SIGINT received: Closing Prisma client');
+    await prisma.$disconnect();
+    process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+    console.log('SIGTERM received: Closing Prisma client');
+    await prisma.$disconnect();
+    process.exit(0);
+});
+
+
+  
 
 app.listen(PORT, () => {console.log(`App listening on port ${PORT}`)});
