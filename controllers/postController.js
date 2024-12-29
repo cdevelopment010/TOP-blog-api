@@ -104,8 +104,11 @@ const getPostById = async(req, res, next) => {
     const { postId } = req.params;
     try { 
         const post = await db.findPostById(postId); 
-        res.sendStatus(200); 
-        return post; 
+        return res.status(200).json({
+            success: true, 
+            message: 'Posts by ID', 
+            data: post
+        })
     } catch (err) { 
         console.error(err); 
         return next(err); 
