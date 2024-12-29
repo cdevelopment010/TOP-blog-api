@@ -2,7 +2,7 @@ const express = require("express");
 // const session = require("express-session");
 const session = require("./config/session");
 const passport = require("./config/passport");
-const prisma = require("./config/queries"); 
+const prisma = require("./config/prisma"); 
 
 const cors = require("cors");
 const app = express(); 
