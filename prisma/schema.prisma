@@ -42,7 +42,7 @@ model User {
 model Post {
   id Int @id @default(autoincrement())
   title String
-  content String
+  content Json
   numberOfViews Int @default(0)
   numberOfShares Int @default(0)
   published Boolean @default(false)

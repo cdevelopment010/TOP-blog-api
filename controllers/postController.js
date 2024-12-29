@@ -8,8 +8,10 @@ const createPost = async(req, res, next) => {
             return res.sendStatus(403); 
         } else { 
             const postDetail = req.body.post; 
-            postDetail.createdById= req.body.currentUser.id;
-            postDetail.updatedById= req.body.currentUser.id;
+            postDetail.createdById= authData.user.id;
+            postDetail.updatedById= authData.user.id;
+            // postDetail.createdById= req.body.currentUser.id;
+            // postDetail.updatedById= req.body.currentUser.id;
 
             try { 
                 console.log(postDetail);
@@ -145,12 +147,13 @@ const updatePost = async(req, res, next) => {
             return res.sendStatus(403); 
         } else { 
             const { postId } = req.params; 
+            const currentUserId = authData.user.id
             const postDetail = {
                 id: postId,
                 title: req.body.title, 
                 content: req.body.content,
-                createdById: currentUser.id,
-                updatedById: currentUser.id,
+                createdById: currentUserId,
+                updatedById: currentUserId,
                 published: req.body.published,
                 publishedById: req.body.publishedById, 
                 publishedAt: req.body.publishedAt,
@@ -158,7 +161,11 @@ const updatePost = async(req, res, next) => {
             }
             try { 
                 const post = await db.updatePost(postDetail); 
-                return post; 
+                return res.status(200).json({
+                    success: true, 
+                    message: 'Posts Updated', 
+                    data: post
+                })
             } catch(err) {
                 console.error(err); 
                 return next(err);
