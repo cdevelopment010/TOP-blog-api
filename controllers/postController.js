@@ -14,7 +14,6 @@ const createPost = async(req, res, next) => {
             // postDetail.updatedById= req.body.currentUser.id;
 
             try { 
-                console.log(postDetail);
                 const post = await db.createPost(postDetail); 
                 return res.status(200).json({
                     message: "Post created",
@@ -142,23 +141,14 @@ const getPostByTag = async(req, res, next) => {
 }
 
 const updatePost = async(req, res, next) => {
+    console.log("Update post controller", );
     jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
         if(err) {
             return res.sendStatus(403); 
         } else { 
-            const { postId } = req.params; 
             const currentUserId = authData.user.id
-            const postDetail = {
-                id: postId,
-                title: req.body.title, 
-                content: req.body.content,
-                createdById: currentUserId,
-                updatedById: currentUserId,
-                published: req.body.published,
-                publishedById: req.body.publishedById, 
-                publishedAt: req.body.publishedAt,
-        
-            }
+            const postDetail = req.body.post; 
+            postDetail.updatedById = currentUserId;
             try { 
                 const post = await db.updatePost(postDetail); 
                 return res.status(200).json({
@@ -183,7 +173,11 @@ const deletePost = async(req, res, next) => {
             const { postId } = req.params; 
             try { 
                 const post = await db.deletePost(postId); 
-                return post; 
+                return res.status(200).json({
+                    success: true, 
+                    message: 'Posts Deleted', 
+                    data: post
+                }) 
             } catch(err) {
                 console.error(err); 
                 return next(err);

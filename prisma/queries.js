@@ -82,7 +82,6 @@ exports.findUserByEmail = async(userEmail) => {
 
 //Posts
 exports.createPost = async (post) => {
-    console.log("create post prisma:", post);
     return await prisma.post.create({
         data: {
             title: post.title,
@@ -119,7 +118,6 @@ exports.updatePost = async (post) => {
 
 exports.hidePost = async (postId, userId) => {
     try { 
-        console.log("hide post");
         return await prisma.post.update({
             where: {
                 id: parseInt(postId)
@@ -140,7 +138,6 @@ exports.hidePost = async (postId, userId) => {
 }
 exports.showPost = async (postId, userId) => {
     try { 
-        console.log("show post:")
         return await prisma.post.update({
             where: {
                 id: parseInt(postId)
