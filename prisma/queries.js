@@ -120,30 +120,44 @@ exports.updatePost = async (post) => {
 
 
 exports.hidePost = async (postId, userId) => {
-    return await prisma.post.update({
-        where: {
-            id: parseInt(postId)
-        },
-        data: {
-            published: false,
-            publishedAt: null,
-            publishedById: null,
-            updatedById: userId,
-            updatedAt: new Date()
-        }
-    })
+    try { 
+        console.log("hide post");
+        return await prisma.post.update({
+            where: {
+                id: parseInt(postId)
+            },
+            data: {
+                published: false,
+                publishedAt: null,
+                publishedById: null,
+                updatedById: userId,
+                updatedAt: new Date()
+            }
+        })
+    } catch(err) { 
+        console.error("Error"); 
+        throw err;
+    }
+    
 }
 exports.showPost = async (postId, userId) => {
-    return await prisma.post.update({
-        where: {
-            id: parseInt(postId)
-        },
-        data: {
-            published: true,
-            publishedAt: new Date(),
-            publishedById: userId,
-        }
-    })
+    try { 
+        console.log("show post:")
+        return await prisma.post.update({
+            where: {
+                id: parseInt(postId)
+            },
+            data: {
+                published: true,
+                publishedAt: new Date(),
+                publishedById: userId,
+            }
+        })
+    } catch (err) { 
+        console.error(err); 
+        throw err; 
+    }
+    
 }
 
 exports.deletePost = async (postId) => {
@@ -155,7 +169,11 @@ exports.deletePost = async (postId) => {
 }
 
 exports.findAllPosts = async () => {
-    return await prisma.post.findMany();
+    return await prisma.post.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        }
+    });
 }
 
 exports.findPostById = async (postId) => {

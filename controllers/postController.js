@@ -14,7 +14,12 @@ const createPost = async(req, res, next) => {
             try { 
                 console.log(postDetail);
                 const post = await db.createPost(postDetail); 
-                return post; 
+                return res.status(200).json({
+                    message: "Post created",
+                    auth: authData,
+                    data: post,
+                    authData: authData
+                })
             } catch(err) {
                 console.error(err); 
                 return next(err);
@@ -29,10 +34,15 @@ const publishPost = async (req, res, next) => {
                 return res.sendStatus(403); 
             } else { 
                 const { postId } = req.params;
-                const currentUserId = authData.id
+                const currentUserId = authData.user.id;
                 try { 
                     const post = await db.showPost(postId, currentUserId); 
-                    return post; 
+                    return res.status(200).json({
+                        message: "Post published",
+                        auth: authData,
+                        data: post,
+                        authData: authData
+                    })
                 } catch(err) {
                     console.error(err); 
                     return next(err); 
@@ -47,10 +57,15 @@ const unpublishPost = async(req, res, next) => {
             return res.sendStatus(403); 
         } else { 
             const { postId } = req.params;
-            const currentUserId = authData.id
+            const currentUserId = authData.user.id;
             try { 
                 const post = await db.hidePost(postId,currentUserId); 
-                return post; 
+                return res.status(200).json({
+                    message: "Post unpublished",
+                    auth: authData,
+                    data: post,
+                    authData: authData
+                })
             } catch(err) {
                 console.error(err); 
                 return next(err); 
