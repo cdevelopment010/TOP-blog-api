@@ -3,53 +3,69 @@ const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY || 'secret-key'
 
 const createPost = async(req, res, next) => {
-    const postDetail = req.body.post; 
-
-    console.log(req.body);
-
-    postDetail.createdById= req.body.currentUser.id;
-    postDetail.updatedById= req.body.currentUser.id;
-
-    try { 
-        console.log(postDetail);
-        const post = await db.createPost(postDetail); 
-        res.sendStatus(200); 
-        return post; 
-    } catch(err) {
-        console.error(err); 
-        return next(err);
-    }
-}
-
-const publishPost = async (req, res, next) => {
-    const { postId } = req.params;
-    try { 
-        const post = await db.showPost(postId, currentUser.id); 
-        res.sendStatus(200); 
-        return post; 
-    } catch(err) {
-        console.error(err); 
-        return next(err); 
-    }
-}
-
-const unpublishPost = async(req, res, next) => {
-    const { postId } = req.params;
-    try { 
-        const post = await db.hidePost(postId, currentUser.id); 
-        res.sendStatus(200); 
-        return post; 
-    } catch(err) {
-        console.error(err); 
-        return next(err); 
-    }
-}
-
-const getAllPosts = async(req, res, next) => {
     jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
         if(err) {
             return res.sendStatus(403); 
         } else { 
+            const postDetail = req.body.post; 
+            postDetail.createdById= req.body.currentUser.id;
+            postDetail.updatedById= req.body.currentUser.id;
+
+            try { 
+                console.log(postDetail);
+                const post = await db.createPost(postDetail); 
+                return post; 
+            } catch(err) {
+                console.error(err); 
+                return next(err);
+            }
+        }
+    })
+}
+
+const publishPost = async (req, res, next) => {
+    jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
+            if(err) {
+                return res.sendStatus(403); 
+            } else { 
+                const { postId } = req.params;
+                const currentUserId = authData.id
+                try { 
+                    const post = await db.showPost(postId, currentUserId); 
+                    return post; 
+                } catch(err) {
+                    console.error(err); 
+                    return next(err); 
+                }
+            }
+        })
+}
+
+const unpublishPost = async(req, res, next) => {
+    jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
+        if(err) {
+            return res.sendStatus(403); 
+        } else { 
+            const { postId } = req.params;
+            const currentUserId = authData.id
+            try { 
+                const post = await db.hidePost(postId,currentUserId); 
+                return post; 
+            } catch(err) {
+                console.error(err); 
+                return next(err); 
+            }
+        }
+    })
+}
+
+const getAllPosts = async(req, res, next) => {
+    // jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
+    //     if(err) {
+    //         return res.sendStatus(403); 
+    //     } else { 
+
+    // Shouldn't need to veryify to view the posts
             await db.findAllPosts()
                 .then(posts => {
                     return res.status(200).json({
@@ -65,8 +81,8 @@ const getAllPosts = async(req, res, next) => {
                     })
                 })
 
-        }
-    })
+        // }
+    // })
 }
 
 const getPostById = async(req, res, next) => {
@@ -106,38 +122,49 @@ const getPostByTag = async(req, res, next) => {
 }
 
 const updatePost = async(req, res, next) => {
-    const { postId } = req.params; 
-    const postDetail = {
-        id: postId,
-        title: req.body.title, 
-        content: req.body.content,
-        createdById: currentUser.id,
-        updatedById: currentUser.id,
-        published: req.body.published,
-        publishedById: req.body.publishedById, 
-        publishedAt: req.body.publishedAt,
-
-    }
-    try { 
-        const post = await db.updatePost(postDetail); 
-        res.sendStatus(200); 
-        return post; 
-    } catch(err) {
-        console.error(err); 
-        return next(err);
-    }
+    jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
+        if(err) {
+            return res.sendStatus(403); 
+        } else { 
+            const { postId } = req.params; 
+            const postDetail = {
+                id: postId,
+                title: req.body.title, 
+                content: req.body.content,
+                createdById: currentUser.id,
+                updatedById: currentUser.id,
+                published: req.body.published,
+                publishedById: req.body.publishedById, 
+                publishedAt: req.body.publishedAt,
+        
+            }
+            try { 
+                const post = await db.updatePost(postDetail); 
+                return post; 
+            } catch(err) {
+                console.error(err); 
+                return next(err);
+            }
+        }
+    })
 }
 
 const deletePost = async(req, res, next) => {
-    const { postId } = req.params; 
-    try { 
-        const post = await db.deletePost(postId); 
-        res.sendStatus(200); 
-        return post; 
-    } catch(err) {
-        console.error(err); 
-        return next(err);
-    }
+
+    jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
+        if(err) {
+            return res.sendStatus(403); 
+        } else { 
+            const { postId } = req.params; 
+            try { 
+                const post = await db.deletePost(postId); 
+                return post; 
+            } catch(err) {
+                console.error(err); 
+                return next(err);
+            }
+        }
+    })
 }
 
 

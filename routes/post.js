@@ -17,4 +17,8 @@ router.post("/:postId/Comments", controller.createComment);
 router.delete("/:postId/Comments/:commentId", controller.deleteCommentById);
 router.put("/:postId/Comments/:commentId", controller.updateCommentById);
 
+router.post("/publish/:postId", middleware.verifyToken, controller.publishPost); 
+router.post("/unpublish/:postId", middleware.verifyToken, controller.unpublishPost); 
+
+
 module.exports = router;
