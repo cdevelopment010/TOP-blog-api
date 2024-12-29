@@ -171,7 +171,7 @@ exports.deletePost = async (postId) => {
 exports.findAllPosts = async () => {
     return await prisma.post.findMany({
         orderBy: {
-            createdAt: 'desc'
+            createdAt: 'asc'
         }
     });
 }
