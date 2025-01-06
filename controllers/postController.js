@@ -187,6 +187,79 @@ const deletePost = async(req, res, next) => {
 }
 
 
+//find published posts 
+const getAllPublishedPosts = async(req, res, next) => {
+    await db.findAllPublishedPosts()
+    .then(posts => {
+        return res.status(200).json({
+            success: true, 
+            message: 'Posts', 
+            data: posts
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            success: false, 
+            message: err.message,
+        })
+    })
+}
+
+const getAllPublishedPostsByTag = async(req, res, next) => {
+    const { tagId } = req.params;
+
+    await db.findAllPublishedPostsByTag(tagId)
+    .then(posts => {
+        return res.status(200).json({
+            success: true, 
+            message: 'Posts', 
+            data: posts
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            success: false, 
+            message: err.message,
+        })
+    })
+}
+const getAllPublishedPostsBySlug = async(req, res, next) => {
+    const { slug } = req.params;
+
+    await db.findAllPublishedPostsBySlug(slug)
+    .then(posts => {
+        return res.status(200).json({
+            success: true, 
+            message: 'Posts', 
+            data: posts
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            success: false, 
+            message: err.message,
+        })
+    })
+}
+const getAllRecentPublishedPosts = async(req, res, next) => {
+    const { recentNumber } = req.params;
+
+    await db.findAllRecentPublishedPosts(recentNumber)
+    .then(posts => {
+        return res.status(200).json({
+            success: true, 
+            message: 'Posts', 
+            data: posts
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            success: false, 
+            message: err.message,
+        })
+    })
+}
+
 ///Comments
 const getCommentsByPost = async(req, res, next) => {
     const {postId} = req.params; 
@@ -238,5 +311,9 @@ module.exports = {
     getCommentById,
     createComment,
     deleteCommentById,
-    updateCommentById
+    updateCommentById, 
+    getAllPublishedPosts, 
+    getAllPublishedPostsByTag,
+    getAllPublishedPostsBySlug, 
+    getAllRecentPublishedPosts
 }

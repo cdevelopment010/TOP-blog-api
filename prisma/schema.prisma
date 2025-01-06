@@ -57,6 +57,9 @@ model Post {
   updatedById Int?
   comment Comment[] @relation("PostComment")
   tags Tag[] @relation("PostTag")
+  slug String? 
+  metaDescription String? 
+  metaKeywords String? 
 
 }
 

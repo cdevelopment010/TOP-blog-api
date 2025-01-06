@@ -195,6 +195,55 @@ exports.findPostByTag = async (tagId) => {
     })
 }
 
+exports.findAllPublishedPosts = async () => {
+    return await prisma.post.findMany({
+        where: {
+            published: true
+        },
+        orderBy: {
+            publishedAt: 'desc'
+        }
+    });
+}
+
+exports.findAllPublishedPostsByTag = async (tagId) => {
+    return await prisma.post.findMany({
+        where: {
+            published: true,
+            tagId: parseInt(tagId)
+        },
+        orderBy: {
+            publishedAt: 'desc'
+        }
+    });
+}
+
+exports.findAllPublishedPostsBySlug = async (slug) => {
+    return await prisma.post.findMany({
+        where: {
+            published: true,
+            slug: slug
+        },
+        orderBy: {
+            publishedAt: 'desc'
+        }
+    });
+}
+
+exports.findAllRecentPublishedPosts = async (number) => {
+    return await prisma.post.findMany({
+        take: number,
+        where: {
+            published: true,
+        },
+        orderBy: {
+            publishedAt: 'desc'
+        }
+    });
+}
+
+
+
 //Comments
 exports.findCommentById = async (commentId) => {
     return await prisma.comment.findFirst({
