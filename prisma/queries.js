@@ -232,7 +232,7 @@ exports.findAllPublishedPostsBySlug = async (slug) => {
 
 exports.findAllRecentPublishedPosts = async (number) => {
     return await prisma.post.findMany({
-        take: number,
+        take: parseInt(number),
         where: {
             published: true,
         },
