@@ -214,7 +214,7 @@ exports.findAllPublishedPosts = async () => {
     // Add slugCombined field
     return posts.map(post => ({
         ...post,
-        slugCombined: post.slug.replace(/\s+/g, '-').toLowerCase()
+        slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
     }));
 }
 
