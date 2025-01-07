@@ -202,7 +202,7 @@ exports.findPostByTag = async (tagId) => {
 }
 
 exports.findAllPublishedPosts = async () => {
-    return await prisma.post.findMany({
+    const posts = await prisma.post.findMany({
         where: {
             published: true
         },
@@ -210,6 +210,12 @@ exports.findAllPublishedPosts = async () => {
             publishedAt: 'desc'
         }
     });
+
+    // Add slugCombined field
+    return posts.map(post => ({
+        ...post,
+        slugCombined: post.slug.replace(/\s+/g, '-').toLowerCase()
+    }));
 }
 
 exports.findAllPublishedPostsByTag = async (tagId) => {
