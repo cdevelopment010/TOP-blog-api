@@ -110,7 +110,10 @@ exports.updatePost = async (post) => {
             publishedAt: post.published ? new Date() : null,
             publishedById: post.publishedById,
             createdById: post.createdById,
-            updatedById: post.updatedById
+            updatedById: post.updatedById, 
+            slug: post.slug, 
+            metaDescription: post.metaDescription, 
+            metaKeywords: post.metaKeywords
         }
     })
 }
