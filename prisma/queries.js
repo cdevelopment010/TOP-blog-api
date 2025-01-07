@@ -93,7 +93,10 @@ exports.createPost = async (post) => {
             createdByUser: {connect: {id: post.createdById}},
             // updatedById: post.updatedById ?? null,
             updatedByUser: {connect: {id: post.updatedById}}, 
-            tags: {connect: post.tagId.map(tag => ({id: parseInt(tag.id)}))}
+            tags: {connect: post.tagId.map(tag => ({id: parseInt(tag.id)}))},
+            slug: post.slug, 
+            metaDescription: post.metaDescription, 
+            metaKeywords: post.metaKeywords
         }
     })
 }
