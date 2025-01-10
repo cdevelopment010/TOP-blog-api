@@ -219,7 +219,7 @@ exports.findAllPublishedPosts = async () => {
 }
 
 exports.findAllPublishedPostsByTag = async (tagId) => {
-    return await prisma.post.findMany({
+    const posts =  await prisma.post.findMany({
         where: {
             published: true,
             tagId: parseInt(tagId)
@@ -228,10 +228,15 @@ exports.findAllPublishedPostsByTag = async (tagId) => {
             publishedAt: 'desc'
         }
     });
+
+    return posts.map(post => ({
+        ...post,
+        slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
+    }));
 }
 
 exports.findAllPublishedPostsBySlug = async (slug) => {
-    return await prisma.post.findMany({
+    const posts =  await prisma.post.findMany({
         where: {
             published: true,
             slug: slug
@@ -240,10 +245,15 @@ exports.findAllPublishedPostsBySlug = async (slug) => {
             publishedAt: 'desc'
         }
     });
+
+    return posts.map(post => ({
+        ...post,
+        slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
+    }));
 }
 
 exports.findAllRecentPublishedPosts = async (number) => {
-    return await prisma.post.findMany({
+    const posts = await prisma.post.findMany({
         take: parseInt(number),
         where: {
             published: true,
@@ -252,6 +262,11 @@ exports.findAllRecentPublishedPosts = async (number) => {
             publishedAt: 'desc'
         }
     });
+
+    return posts.map(post => ({
+        ...post,
+        slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
+    }));
 }
 
 
