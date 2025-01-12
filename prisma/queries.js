@@ -236,10 +236,12 @@ exports.findAllPublishedPostsByTag = async (tagId) => {
 }
 
 exports.findAllPublishedPostsBySlug = async (slug) => {
+    const originalSlug = slug.replace(/-/g, " "); 
+
     const posts =  await prisma.post.findMany({
         where: {
             published: true,
-            slug: slug
+            slug: originalSlug
         },
         orderBy: {
             publishedAt: 'desc'
