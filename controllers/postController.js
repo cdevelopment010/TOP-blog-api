@@ -264,27 +264,40 @@ const getAllRecentPublishedPosts = async(req, res, next) => {
 const getCommentsByPost = async(req, res, next) => {
     const {postId} = req.params; 
 
-    try {
-        const comments = await db.findCommentByPost(postId); 
-        res.sendStatus(200); 
-        return comments; 
-    } catch (err) {
-        console.log(err); 
-        return next(err);
-    }
+
+    await db.findCommentByPost(postId)
+    .then(comments => {
+        return res.status(200).json({
+            success: true, 
+            message: 'Comments', 
+            data: comments
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            success: false, 
+            message: err.message,
+        })
+    })
 }
 
 const getCommentById = async(req, res, next) => {
     const {commentId, postId} = req.params; 
 
-    try {
-        const comment = await db.findCommentById(commentId); 
-        res.sendStatus(200); 
-        return comment; 
-    } catch (err) {
-        console.log(err); 
-        return next(err);
-    }
+    await db.findCommentById(commentId)
+    .then(comment => {
+        return res.status(200).json({
+            success: true, 
+            message: 'Comments', 
+            data: comment
+        })
+    })
+    .catch(err => {
+        return res.status(400).json({
+            success: false, 
+            message: err.message,
+        })
+    })
 }
 const createComment = async(req, res, next) => {
 

@@ -282,11 +282,12 @@ exports.findCommentById = async (commentId) => {
 }
 
 exports.findCommentByPost = async (postId) => {
-    return await prisma.comment.findMany({
+    const comments =  await prisma.comment.findMany({
         where: {
             postId: parseInt(postId)
         }
     })
+    return comments; 
 }
 
 exports.createComment = async (comment) => {
