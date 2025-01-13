@@ -308,6 +308,7 @@ module.exports = {
     getPostByTag,
     updatePost,
     deletePost,
+    getCommentsByPost,
     getCommentById,
     createComment,
     deleteCommentById,
@@ -315,5 +316,5 @@ module.exports = {
     getAllPublishedPosts, 
     getAllPublishedPostsByTag,
     getAllPublishedPostsBySlug, 
-    getAllRecentPublishedPosts
+    getAllRecentPublishedPosts, 
 }

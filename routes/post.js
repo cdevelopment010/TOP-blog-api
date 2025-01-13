@@ -12,6 +12,7 @@ router.put("/:postId", middleware.verifyToken, controller.updatePost);
 router.get("/author/:authorId", middleware.verifyToken, controller.getPostByAuthor);
 router.get("/tag/:tagId", middleware.verifyToken, controller.getPostByTag);
 
+router.get("/:postId/Comments", controller.getCommentsByPost);
 router.get("/:postId/Comments/:commentId",controller.getCommentById);
 router.post("/:postId/Comments", controller.createComment);
 router.delete("/:postId/Comments/:commentId", controller.deleteCommentById);
