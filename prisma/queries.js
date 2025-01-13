@@ -276,7 +276,7 @@ exports.findAllRecentPublishedPosts = async (number) => {
 exports.findCommentById = async (commentId) => {
     return await prisma.comment.findFirst({
         where: { 
-            id: commentId,
+            id: parseInt(commentId),
         }
     })
 }
@@ -284,7 +284,7 @@ exports.findCommentById = async (commentId) => {
 exports.findCommentByPost = async (postId) => {
     return await prisma.comment.findMany({
         where: {
-            postId: postId
+            postId: parseInt(postId)
         }
     })
 }
@@ -292,8 +292,8 @@ exports.findCommentByPost = async (postId) => {
 exports.createComment = async (comment) => {
     return await prisma.comment.create({
         data: { 
-            createdById: comment.createdById, 
-            postId: comment.postId,
+            createdById: parseInt(comment.createdById), 
+            postId: parseInt(comment.postId),
             comment: comment.comment,
         }
     })
@@ -302,7 +302,7 @@ exports.createComment = async (comment) => {
 exports.updateComment = async (comment) => {
     return await prisma.comment.create({
         where: {
-            id: comment.id
+            id: parseInt(comment.id)
         },
         data: { 
             postId: comment.postId,
@@ -316,7 +316,7 @@ exports.updateComment = async (comment) => {
 exports.deleteCommentById = async(commentId) => {
     return await prisma.comment.delete({
         where: {
-            id: commentId
+            id: parseInt(commentId)
         }
     })
 }
