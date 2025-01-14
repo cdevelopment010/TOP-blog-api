@@ -293,8 +293,8 @@ exports.findCommentByPost = async (postId) => {
 exports.createComment = async (comment) => {
     return await prisma.comment.create({
         data: { 
-            createdById: parseInt(comment.createdById), 
             postId: parseInt(comment.postId),
+            createdAt: comment.createdAt,
             comment: comment.comment,
         }
     })

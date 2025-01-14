@@ -300,7 +300,23 @@ const getCommentById = async(req, res, next) => {
     })
 }
 const createComment = async(req, res, next) => {
+    const { postId } = req.params; 
+    const newComment = req.body.newComment; 
 
+    await db.createComment(newComment)
+        .then(comment => {
+            return res.status(200).json({
+                success: true, 
+                message: 'Comments', 
+                data: comment
+            })
+        })
+        .catch(err => {
+            return res.status(400).json({
+                success: false, 
+                message: err.message,
+            })
+        })
 }
 const deleteCommentById = async(req, res, next) => {
 
