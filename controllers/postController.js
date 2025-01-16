@@ -267,6 +267,7 @@ const getCommentsByPost = async(req, res, next) => {
 
     await db.findCommentByPost(postId)
     .then(comments => {
+        console.log("API Comments:", comments);
         return res.status(200).json({
             success: true, 
             message: 'Comments', 
@@ -326,6 +327,24 @@ const updateCommentById = async(req, res, next) => {
 }
 
 
+const getTagsByPostId = async (req, res, next) => {
+    const { postId } = req.params; 
+    await db.tagsByPostId(postId)
+        .then(tags => {
+            return res.status(200).json({
+                success: true, 
+                message: 'Comments', 
+                data: tags
+            })
+        })
+        .catch(err => {
+            return res.status(400).json({
+                success: false, 
+                message: err.message,
+            })
+        })
+}
+
 
 module.exports = {
     createPost,
@@ -346,4 +365,5 @@ module.exports = {
     getAllPublishedPostsByTag,
     getAllPublishedPostsBySlug, 
     getAllRecentPublishedPosts, 
+    getTagsByPostId,
 }

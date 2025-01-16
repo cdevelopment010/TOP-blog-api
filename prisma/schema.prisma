@@ -1,92 +1,85 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-model Session { 
-  id String @id
-  sid String @unique
-  data String @db.VarChar(255)
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.VarChar(255)
   expiresAt DateTime
 }
 
-model User { 
-  id  Int @id @default(autoincrement())
-  name String 
-  email String @unique
-  password String
-  admin Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  publishedPost Post[] @relation("PublishedPost")
-  createdPost Post[] @relation("CreatedPost")
-  updatedPost Post[] @relation("UpdatedPost")
+model User {
+  id             Int       @id @default(autoincrement())
+  name           String
+  email          String    @unique
+  password       String
+  admin          Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now())
   createdComment Comment[] @relation("CreatedComment")
   deletedComment Comment[] @relation("DeletedComment")
-  createdTag Tag[] @relation("CreatedTag")
-  updatedTag Tag[] @relation("UpdatedTag")
-  deletedTag Tag[] @relation("DeletedTag")
+  createdPost    Post[]    @relation("CreatedPost")
+  publishedPost  Post[]    @relation("PublishedPost")
+  updatedPost    Post[]    @relation("UpdatedPost")
+  createdTag     Tag[]     @relation("CreatedTag")
+  deletedTag     Tag[]     @relation("DeletedTag")
+  updatedTag     Tag[]     @relation("UpdatedTag")
 }
 
 model Post {
-  id Int @id @default(autoincrement())
-  title String
-  content Json
-  numberOfViews Int @default(0)
-  numberOfShares Int @default(0)
-  published Boolean @default(false)
-  publishedAt DateTime?
-  publishedBy User? @relation("PublishedPost", fields: [publishedById], references: [id])
-  publishedById Int?
-  createdAt DateTime @default(now())
-  createdByUser User @relation("CreatedPost",fields: [createdById], references: [id])
-  createdById Int
-  updatedAt DateTime @default(now())
-  updatedByUser User? @relation("UpdatedPost",fields: [updatedById], references: [id])
-  updatedById Int?
-  comment Comment[] @relation("PostComment")
-  tags Tag[] @relation("PostTag")
-  slug String? 
-  metaDescription String? 
-  metaKeywords String? 
-
+  id              Int       @id @default(autoincrement())
+  title           String
+  numberOfViews   Int       @default(0)
+  numberOfShares  Int       @default(0)
+  published       Boolean   @default(false)
+  publishedAt     DateTime?
+  publishedById   Int?
+  createdAt       DateTime  @default(now())
+  createdById     Int
+  updatedAt       DateTime  @default(now())
+  updatedById     Int?
+  content         Json
+  metaDescription String?
+  metaKeywords    String?
+  slug            String?
+  comment         Comment[] @relation("PostComment")
+  createdByUser   User      @relation("CreatedPost", fields: [createdById], references: [id])
+  publishedBy     User?     @relation("PublishedPost", fields: [publishedById], references: [id])
+  updatedByUser   User?     @relation("UpdatedPost", fields: [updatedById], references: [id])
+  tags            Tag[]     @relation("PostTag")
 }
 
 model Comment {
-  id Int @id @default(autoincrement())
-  comment String
-  postId Int
-  post Post @relation("PostComment", fields: [postId], references: [id])
-  createdAt DateTime @default(now())
-  createdByUser User? @relation("CreatedComment", fields: [createdById], references: [id])
-  createdById Int?
-  deletedAt DateTime?
-  deletedById Int?
-  DeletedByUser User? @relation("DeletedComment", fields: [deletedById], references: [id]) //admin only
+  id            Int       @id @default(autoincrement())
+  comment       String
+  postId        Int
+  createdAt     DateTime  @default(now())
+  createdById   Int?
+  deletedAt     DateTime?
+  deletedById   Int?
+  createdByUser User?     @relation("CreatedComment", fields: [createdById], references: [id])
+  DeletedByUser User?     @relation("DeletedComment", fields: [deletedById], references: [id])
+  post          Post      @relation("PostComment", fields: [postId], references: [id])
 }
 
 model Tag {
-  id Int @id @default(autoincrement())
-  name String
-  createdAt DateTime @default(now())
-  createdByUser User @relation("CreatedTag", fields: [createdById], references: [id])
-  createdById Int
-  updatedAt DateTime @default(now())
-  updatedByUser User? @relation("UpdatedTag", fields: [updatedById], references: [id])
-  updatedById Int?
-  deletedAt DateTime?
-  deletedById Int?
-  DeletedByUser User? @relation("DeletedTag", fields: [deletedById], references: [id]) // admin only
-  PostTag Post[] @relation("PostTag")
+  id            Int       @id @default(autoincrement())
+  name          String
+  createdAt     DateTime  @default(now())
+  createdById   Int
+  updatedAt     DateTime  @default(now())
+  updatedById   Int?
+  deletedAt     DateTime?
+  deletedById   Int?
+  createdByUser User      @relation("CreatedTag", fields: [createdById], references: [id])
+  DeletedByUser User?     @relation("DeletedTag", fields: [deletedById], references: [id])
+  updatedByUser User?     @relation("UpdatedTag", fields: [updatedById], references: [id])
+  PostTag       Post[]    @relation("PostTag")
 }

@@ -201,6 +201,23 @@ exports.findPostByTag = async (tagId) => {
     })
 }
 
+exports.tagsByPostId = async (postId) => {
+    try {
+        const tags = await prisma.post.findUnique({
+            where: { id: parseInt(postId) },
+            select: {
+                tags: {
+                    select: { name: true, id: true },
+                },
+            },
+        });
+        return tags;
+    } catch (error) {
+        console.error("Error fetching tags:", error);
+        throw error; // Rethrow the error for further handling
+    }
+}
+
 exports.findAllPublishedPosts = async () => {
     const posts = await prisma.post.findMany({
         where: {
