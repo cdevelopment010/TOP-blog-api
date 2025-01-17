@@ -167,11 +167,29 @@ const deleteTagById = (req, res) => {
     
 }
 
+const getTagPostCount = async (req, res, next) => {
+    await db.getPostCountByTag()
+        .then(tags => {
+            res.status(200).json({
+                success: true, 
+                message: "Tags with post count", 
+                data: tags
+            })
+        })
+        .catch( err => {
+            res.status(400).json({
+                success: false, 
+                message: err.message,
+                data: null
+            })
+        })
+}
 
 module.exports = {
     getAllTags,
     getTagById,
     createTag,
     putTagById,
-    deleteTagById
+    deleteTagById,
+    getTagPostCount
 }

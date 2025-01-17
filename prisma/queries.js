@@ -382,3 +382,22 @@ exports.deleteTagById = async (tagId) => {
         }
     })
 }
+
+exports.getPostCountByTag = async () => {
+    try {
+        const tags = await prisma.tag.findMany({
+            select: {
+                name: true, // Include the tag name
+                _count: {
+                    select: {
+                        PostTag: true, // Use the correct relation field for the PostTag join
+                    },
+                },
+            },
+        });
+        return tags;
+    } catch (error) {
+        console.error("Error fetching tags with post counts:", error);
+        throw error;
+    }
+};

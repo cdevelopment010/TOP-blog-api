@@ -3,6 +3,7 @@ const router = Router();
 const controller = require("../controllers/tagController"); 
 const middleware = require("../middleware/user"); 
 
+router.get("/tagPostCount", controller.getTagPostCount)
 router.get("/", middleware.verifyToken, controller.getAllTags); //List all tags
 router.post("/", middleware.verifyToken, controller.createTag); //Create new tag
 router.get("/:tagId", middleware.verifyToken, controller.getTagById); //Get one tag by ID
