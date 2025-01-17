@@ -182,6 +182,9 @@ exports.findPostById = async (postId) => {
     return await prisma.post.findFirst({
         where: {
             id: parseInt(postId)
+        },
+        include: {
+            tags: true
         }
     })
 }
