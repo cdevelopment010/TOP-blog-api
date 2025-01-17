@@ -112,8 +112,9 @@ exports.updatePost = async (post) => {
             published: post.published,
             publishedAt: post.published ? new Date() : null,
             publishedById: post.publishedById,
-            createdById: post.createdById,
-            updatedById: post.updatedById, 
+            createdByUser: {connect: {id: post.createdById}},            
+            updatedByUser: {connect: {id: post.updatedById}}, 
+            tags: {connect: post.tagId.map(tag => ({id: parseInt(tag.id)}))},
             slug: post.slug, 
             metaDescription: post.metaDescription, 
             metaKeywords: post.metaKeywords
@@ -390,7 +391,11 @@ exports.getPostCountByTag = async () => {
                 name: true, // Include the tag name
                 _count: {
                     select: {
-                        PostTag: true, // Use the correct relation field for the PostTag join
+                        PostTag: {
+                            where: {
+                                published: true, // Only count posts where published is true
+                            },
+                        },
                     },
                 },
             },
