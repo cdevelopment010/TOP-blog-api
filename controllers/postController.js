@@ -148,7 +148,10 @@ const updatePost = async(req, res, next) => {
         } else { 
             const currentUserId = authData.user.id
             const postDetail = req.body.post; 
-            postDetail.updatedById = currentUserId;
+
+            postDetail.createdById= authData.user.id;
+            postDetail.updatedById= authData.user.id;
+        
             try { 
                 const post = await db.updatePost(postDetail); 
                 return res.status(200).json({
