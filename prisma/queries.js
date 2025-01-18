@@ -391,19 +391,19 @@ exports.getPostCountByTag = async () => {
     try {
         const tags = await prisma.tag.findMany({
             select: {
-                name: true, // Include the tag name
+                name: true, 
+                id: true,
                 _count: {
                     select: {
-                        PostTag: {
-                            where: {
-                                published: true, // Only count posts where published is true
-                            },
-                        },
+                        PostTag: true, // Count posts associated with the tag
                     },
                 },
             },
         });
-        return tags;
+
+        const sortedTags = tags.sort((a, b) => b._count.PostTag - a._count.PostTag);
+
+        return sortedTags;
     } catch (error) {
         console.error("Error fetching tags with post counts:", error);
         throw error;
