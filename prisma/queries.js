@@ -243,7 +243,11 @@ exports.findAllPublishedPostsByTag = async (tagId) => {
     const posts =  await prisma.post.findMany({
         where: {
             published: true,
-            tagId: parseInt(tagId)
+            tags: {
+                some: {
+                    id: parseInt(tagId)
+                }
+            }
         },
         orderBy: {
             publishedAt: 'desc'
