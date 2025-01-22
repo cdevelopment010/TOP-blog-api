@@ -295,7 +295,20 @@ exports.findAllRecentPublishedPosts = async (number) => {
     }));
 }
 
-
+exports.searchPosts = async (searchQuery) => {
+    return await prisma.post.findMany({
+        where: {
+            published: true,
+            OR: [
+                { title: { contains: searchQuery, mode: 'insensitive' } }, 
+                { tags: { some: { name: { contains: searchQuery, mode: 'insensitive' } } } }, 
+            ],
+        },
+        orderBy: {
+            publishedAt: 'desc',
+        },
+    });
+};
 
 //Comments
 exports.findCommentById = async (commentId) => {

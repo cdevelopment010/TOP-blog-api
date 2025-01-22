@@ -27,6 +27,7 @@ router.get("/public/publishedPosts", controller.getAllPublishedPosts);
 router.get("/public/publishedPosts/:slug", controller.getAllPublishedPostsBySlug); 
 router.get("/public/publishedPosts/recent/:recentNumber", controller.getAllRecentPublishedPosts); 
 router.get("/public/publishedPosts/tag/:tagId", controller.getAllPublishedPostsByTag); 
+router.get("/public/publishedPosts/search", controller.getPostSearchResults);
 
 
 module.exports = router;

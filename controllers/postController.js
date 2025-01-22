@@ -263,6 +263,33 @@ const getAllRecentPublishedPosts = async(req, res, next) => {
     })
 }
 
+const getPostSearchResults = async (req, res, next) => {
+    const { query } = req.query; 
+
+    if (!query || query.trim() === "") {
+        return res.status(400).json({
+            success: false,
+            message: "Search query cannot be empty",
+        });
+    }
+
+    await db.searchPosts(query)
+        .then(posts => {
+            return res.status(200).json({
+                success: true, 
+                message: "posts found",
+                data: posts
+            })
+        })
+        .catch(err => {
+            console.error("Error searching posts:", err);
+            return res.status(400).json({
+                success: false, 
+                message: err.message,
+            })
+        })
+}
+
 ///Comments
 const getCommentsByPost = async(req, res, next) => {
     const {postId} = req.params; 
@@ -369,4 +396,5 @@ module.exports = {
     getAllPublishedPostsBySlug, 
     getAllRecentPublishedPosts, 
     getTagsByPostId,
+    getPostSearchResults,
 }
