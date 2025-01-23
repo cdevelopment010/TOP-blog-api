@@ -265,6 +265,7 @@ const getAllRecentPublishedPosts = async(req, res, next) => {
 
 const getPostSearchResults = async (req, res, next) => {
     const { query } = req.query; 
+    
 
     if (!query || query.trim() === "") {
         return res.status(400).json({
