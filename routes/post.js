@@ -23,11 +23,12 @@ router.get("/:postId/tags", controller.getTagsByPostId);
 router.post("/publish/:postId", middleware.verifyToken, controller.publishPost); 
 router.post("/unpublish/:postId", middleware.verifyToken, controller.unpublishPost); 
 
-router.get("/public/publishedPosts", controller.getAllPublishedPosts); 
-router.get("/public/publishedPosts/:slug", controller.getAllPublishedPostsBySlug); 
-router.get("/public/publishedPosts/recent/:recentNumber", controller.getAllRecentPublishedPosts); 
-router.get("/public/publishedPosts/tag/:tagId", controller.getAllPublishedPostsByTag); 
 router.get("/public/publishedPosts/search", controller.getPostSearchResults);
+router.get("/public/publishedPosts/recent/:recentNumber", controller.getAllRecentPublishedPosts);
+router.get("/public/publishedPosts/tag/:tagId", controller.getAllPublishedPostsByTag);
+router.get("/public/publishedPosts", controller.getAllPublishedPosts);
+router.get("/public/publishedPosts/:slug", controller.getAllPublishedPostsBySlug);
+
 
 
 module.exports = router;
