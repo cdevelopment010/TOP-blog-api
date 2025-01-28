@@ -23,6 +23,7 @@ model User {
   admin          Boolean   @default(false)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @default(now())
+  imgUrl         String? 
   createdComment Comment[] @relation("CreatedComment")
   deletedComment Comment[] @relation("DeletedComment")
   createdPost    Post[]    @relation("CreatedPost")
