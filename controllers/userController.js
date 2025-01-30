@@ -32,6 +32,16 @@ const userValidationSignIn = [
         .isLength({ min: 3 }).withMessage("Email must be at least 3 characters")
 ]
 
+const resetPasswordValidation = [
+    body("newPassword")
+        .isStrongPassword({
+            minLength: 8
+        }).withMessage("Password must contain at least 8 character, 1 lower case letter, 1 upper case letter, 1 number and 1 symbol")
+        .isLength({min: 3}).withMessage("Password must be at least 3 characters"),
+    body("confirmPassword").custom((value, { req}) => {
+        return value == req.body.newPassword;
+    }).withMessage("Passwords must match")
+]
 
 const postSignInUser = [
     userValidationSignIn, 
@@ -205,6 +215,55 @@ const removeUserAdmin = async (req, res, next) => {
         return next(err); 
     }
 }
+
+const updatePassword = [
+    resetPasswordValidation,
+    async (req, res, next) => {
+        const { userId } = req.params;
+        const user = { 
+            id: userId,
+            password: req.body.newPassword,
+        }
+
+        const errors = validationResult(req); 
+
+        if (!errors.isEmpty()) { 
+            return res.status(400).json({
+                success: false, 
+                message: errors.array(), 
+                data: user,
+            })
+        }
+
+        bcrypt.hash(req.body.newPassword, 15, async(err, hashedPassword) => {
+            if (err) { 
+                return next(err); 
+            }
+
+            user.password = hashedPassword; 
+            try { 
+                const created = await db.updateUserPassword(user);
+                jwt.sign({user: user}, SECRET_KEY, {expiresIn: '1d'}, function(err, token) {
+                    if (err) {
+                        return next(err); 
+                    }
+                    return res.status(200).json({
+                        success: true, 
+                        token: token, 
+                        message: 'Password updated successfully',
+                        data: created
+                    })
+                })
+
+            } catch(err) {
+                console.error(err); 
+                return next(err)
+            }
+
+        })
+
+    }
+]
 
 module.exports = { 
     getUserById, 

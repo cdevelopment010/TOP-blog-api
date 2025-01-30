@@ -26,6 +26,17 @@ exports.updateUser = async (user) => {
     })
 }
 
+exports.updateUserPassword = async (user) => {
+    return await prisma.user.update({
+        where: {
+            id: parseInt(user.id)
+        }, 
+        data : { 
+            password: user.password
+        }
+    })
+}
+
 exports.setUserAsAdmin = async (userId, updatedById) => {
     return await prisma.user.update({
         where: {
