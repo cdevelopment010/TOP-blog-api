@@ -235,6 +235,8 @@ const updatePassword = [
             })
         }
 
+        console.warn("Resetting Password..."); 
+
         bcrypt.hash(req.body.newPassword, 15, async(err, hashedPassword) => {
             if (err) { 
                 return next(err); 
@@ -272,4 +274,5 @@ module.exports = {
     updateUser,
     addUserAdmin, 
     removeUserAdmin,
+    updatePassword, 
 }
