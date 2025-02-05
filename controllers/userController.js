@@ -225,7 +225,6 @@ const updatePassword = [
         }
 
         const errors = validationResult(req); 
-
         if (!errors.isEmpty()) { 
             return res.status(400).json({
                 success: false, 
@@ -233,9 +232,6 @@ const updatePassword = [
                 data: user,
             })
         }
-
-        console.warn("Resetting Password..."); 
-
         bcrypt.hash(req.body.newPassword, 15, async(err, hashedPassword) => {
             if (err) { 
                 return next(err); 
