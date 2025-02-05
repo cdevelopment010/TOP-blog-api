@@ -219,9 +219,8 @@ const removeUserAdmin = async (req, res, next) => {
 const updatePassword = [
     resetPasswordValidation,
     async (req, res, next) => {
-        const { userId } = req.params;
         const user = { 
-            id: userId,
+            email: req.body.currentUserEmail,
             password: req.body.newPassword,
         }
 

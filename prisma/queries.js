@@ -29,7 +29,7 @@ exports.updateUser = async (user) => {
 exports.updateUserPassword = async (user) => {
     return await prisma.user.update({
         where: {
-            id: parseInt(user.id)
+            email: user.email
         }, 
         data : { 
             password: user.password
