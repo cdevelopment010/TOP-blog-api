@@ -233,21 +233,32 @@ exports.tagsByPostId = async (postId) => {
     }
 }
 
-exports.findAllPublishedPosts = async () => {
+exports.findAllPublishedPosts = async (page = 1, limit = 5) => {
+    const skip = limit*(page - 1);
+
+    const totalPosts = await prisma.post.count({
+        where: { published: true }
+    });
+
     const posts = await prisma.post.findMany({
-        where: {
-            published: true
-        },
-        orderBy: {
-            publishedAt: 'desc'
-        }
+        where: {published: true},
+        orderBy: {publishedAt: 'desc'},
+        skip: skip,
+        take: limit
     });
 
     // Add slugCombined field
-    return posts.map(post => ({
+    const postWithSlugs = posts.map(post => ({
         ...post,
         slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
     }));
+
+    return {
+        data: postWithSlugs,
+        currentPage: page,
+        totalPages: Math.ceil(totalPosts / limit),
+        totalPosts: totalPosts
+    }
 }
 
 exports.findAllPublishedPostsByTag = async (tagId) => {

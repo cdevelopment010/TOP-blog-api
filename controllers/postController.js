@@ -192,7 +192,9 @@ const deletePost = async(req, res, next) => {
 
 //find published posts 
 const getAllPublishedPosts = async(req, res, next) => {
-    await db.findAllPublishedPosts()
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit);
+    await db.findAllPublishedPosts(page, limit)
     .then(posts => {
         return res.status(200).json({
             success: true, 
