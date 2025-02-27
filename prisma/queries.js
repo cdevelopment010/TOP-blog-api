@@ -332,6 +332,31 @@ exports.searchPosts = async (searchQuery) => {
     });
 };
 
+//Likes
+
+exports.postLikeCount = async (postId) => {
+    const post = await prisma.post.findUnique({
+        where: { id: parseInt(postId) },
+        select: { numberOfLikes: true } // Return only likes count
+    });
+
+    return post ? post.numberOfLikes : 0;
+};
+
+
+exports.postLike = async (postId, type) => {
+    exports.postLike = async (postId, type) => {
+        return await prisma.post.update({
+            where: { id: postId },
+            data: {
+                numberOfLikes: {
+                    [type === "add" ? "increment" : "decrement"]: 1
+                }
+            }
+        });
+    };
+}
+
 //Comments
 exports.findCommentById = async (commentId) => {
     return await prisma.comment.findFirst({

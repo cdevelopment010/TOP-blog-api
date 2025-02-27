@@ -39,6 +39,7 @@ model Post {
   title           String
   numberOfViews   Int       @default(0)
   numberOfShares  Int       @default(0)
+  numberOfLikes   Int       @default(0) 
   published       Boolean   @default(false)
   publishedAt     DateTime?
   publishedById   Int?

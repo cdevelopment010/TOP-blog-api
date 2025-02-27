@@ -3,6 +3,7 @@ const router = Router();
 const controller = require("../controllers/postController");
 const middleware = require("../middleware/user");
 
+
 router.get("/", middleware.verifyToken, controller.getAllPosts);
 router.post("/", middleware.verifyToken, controller.createPost);
 router.get("/:postId", middleware.verifyToken, controller.getPostById);
@@ -22,6 +23,9 @@ router.get("/:postId/tags", controller.getTagsByPostId);
 
 router.post("/publish/:postId", middleware.verifyToken, controller.publishPost); 
 router.post("/unpublish/:postId", middleware.verifyToken, controller.unpublishPost); 
+
+router.get("/public/publishedPosts/likeCount/:postId", controller.getPostLikeCount);
+router.put("/public/publishedPosts/likeCount/:postId", controller.updatePostLikeCount);
 
 router.get("/public/publishedPosts/search", controller.getPostSearchResults);
 router.get("/public/publishedPosts/recent/:recentNumber", controller.getAllRecentPublishedPosts);

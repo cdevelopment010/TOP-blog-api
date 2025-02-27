@@ -378,6 +378,43 @@ const getTagsByPostId = async (req, res, next) => {
         })
 }
 
+//Like/unlike post
+const getPostLikeCount = async (req, res, next) => {
+    const { postId } = req.params; 
+    await db.postLikeCount(postId)
+        .then(postLikes => {
+            return res.status(200).json({
+                success: true, 
+                message: 'Comments', 
+                data: postLikes
+            })
+        })
+        .catch(err => {
+            return res.status(400).json({
+                success: false, 
+                message: err.message,
+            })
+        })
+}
+
+const updatePostLikeCount = async (req, res, next) => {
+    const { postId } = req.params;
+    const { type } = req.body;
+    await db.postLike(postId, type)
+        .then(postLikes => {
+            return res.status(200).json({
+                success: true, 
+                message: 'Comments', 
+                data: postLikes
+            })
+        })
+        .catch(err => {
+            return res.status(400).json({
+                success: false, 
+                message: err.message,
+            })
+        })
+}
 
 module.exports = {
     createPost,
@@ -400,4 +437,6 @@ module.exports = {
     getAllRecentPublishedPosts, 
     getTagsByPostId,
     getPostSearchResults,
+    updatePostLikeCount,
+    getPostLikeCount
 }
