@@ -347,7 +347,7 @@ exports.postLikeCount = async (postId) => {
 exports.postLike = async (postId, type) => {
     exports.postLike = async (postId, type) => {
         return await prisma.post.update({
-            where: { id: postId },
+            where: { id: parseInt(postId) },
             data: {
                 numberOfLikes: {
                     [type === "add" ? "increment" : "decrement"]: 1
