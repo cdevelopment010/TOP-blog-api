@@ -247,10 +247,8 @@ exports.findAllPublishedPosts = async (page = 1, limit = 5) => {
         take: limit
     });
 
-    // Add slugCombined field
     const postWithSlugs = posts.map(post => ({
-        ...post,
-        slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
+        ...post
     }));
 
     return {
@@ -277,17 +275,16 @@ exports.findAllPublishedPostsByTag = async (tagId) => {
     });
 
     return posts.map(post => ({
-        ...post,
-        slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
+        ...post
     }));
 }
 
 exports.findAllPublishedPostsBySlug = async (slug) => {
-    const originalSlug = slug.replace(/-/g, " "); 
+    // const originalSlug = slug.replace(/-/g, " "); 
     const posts =  await prisma.post.findMany({
         where: {
             published: true,
-            slug: originalSlug
+            slug: slug
         },
         orderBy: {
             publishedAt: 'desc'
@@ -296,7 +293,6 @@ exports.findAllPublishedPostsBySlug = async (slug) => {
 
     return posts.map(post => ({
         ...post,
-        slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
     }));
 }
 
@@ -312,8 +308,7 @@ exports.findAllRecentPublishedPosts = async (number) => {
     });
 
     return posts.map(post => ({
-        ...post,
-        slugCombined: post.slug?.replace(/\s+/g, '-').toLowerCase()
+        ...post
     }));
 }
 
