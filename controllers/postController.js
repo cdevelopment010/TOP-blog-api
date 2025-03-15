@@ -357,6 +357,7 @@ const deleteCommentById = async(req, res, next) => {
 
     jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
         if(err) {
+            console.log("delete comment error", err);
             return res.sendStatus(403); 
         } else { 
             try { 
