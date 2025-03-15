@@ -68,7 +68,7 @@ model Comment {
   deletedById   Int?
   createdByUser User?     @relation("CreatedComment", fields: [createdById], references: [id])
   DeletedByUser User?     @relation("DeletedComment", fields: [deletedById], references: [id])
-  post          Post      @relation("PostComment", fields: [postId], references: [id])
+  post          Post      @relation("PostComment", fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Tag {

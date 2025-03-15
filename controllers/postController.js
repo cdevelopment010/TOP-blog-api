@@ -353,7 +353,24 @@ const createComment = async(req, res, next) => {
         })
 }
 const deleteCommentById = async(req, res, next) => {
+    const {postId, commentId } = req.params; 
 
+    jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
+        if(err) {
+            return res.sendStatus(403); 
+        } else { 
+            try { 
+                const comments = await db.deleteCommentById(commentId); 
+                return res.status(200).json({
+                    success: true, 
+                    message: 'Comment Deleted', 
+                    data: comments
+                }) 
+            } catch(err) {
+                return next(err);
+            }
+        }
+    }) 
 }
 const updateCommentById = async(req, res, next) => {
 
