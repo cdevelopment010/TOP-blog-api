@@ -468,7 +468,7 @@ exports.getPostCountByTag = async () => {
         const filteredTags = tags.filter(tag => tag._count.PostTag > 0);
 
         // Sort by the number of published posts associated with each tag
-        const sortedTags = tags.sort((a, b) => b._count.PostTag - a._count.PostTag);
+        const sortedTags = filteredTags .sort((a, b) => b._count.PostTag - a._count.PostTag);
 
         return sortedTags;
     } catch (error) {
