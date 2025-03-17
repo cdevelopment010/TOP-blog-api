@@ -450,11 +450,17 @@ exports.getPostCountByTag = async () => {
     try {
         const tags = await prisma.tag.findMany({
             select: {
-                name: true, 
+                name: true,
                 id: true,
                 _count: {
                     select: {
-                        PostTag: true, // Count posts associated with the tag
+                        PostTag: {
+                            where: {
+                                post: {
+                                    published: true, // Only count published posts
+                                },
+                            },
+                        },
                     },
                 },
             },
