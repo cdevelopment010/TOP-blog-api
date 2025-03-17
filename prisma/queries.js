@@ -456,14 +456,7 @@ exports.getPostCountByTag = async () => {
                     select: {
                         PostTag: {
                             where: {
-                                postId: {
-                                    in: (
-                                        await prisma.post.findMany({
-                                            where: { published: true },
-                                            select: { id: true },
-                                        })
-                                    ).map((post) => post.id),
-                                },
+                                published: true, // This filters only published posts
                             },
                         },
                     },
@@ -471,6 +464,7 @@ exports.getPostCountByTag = async () => {
             },
         });
 
+        // Sort by the number of published posts associated with each tag
         const sortedTags = tags.sort((a, b) => b._count.PostTag - a._count.PostTag);
 
         return sortedTags;
@@ -479,4 +473,3 @@ exports.getPostCountByTag = async () => {
         throw error;
     }
 };
-
