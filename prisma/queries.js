@@ -456,8 +456,13 @@ exports.getPostCountByTag = async () => {
                     select: {
                         PostTag: {
                             where: {
-                                post: {
-                                    published: true, // Only count published posts
+                                postId: {
+                                    in: (
+                                        await prisma.post.findMany({
+                                            where: { published: true },
+                                            select: { id: true },
+                                        })
+                                    ).map((post) => post.id),
                                 },
                             },
                         },
@@ -474,3 +479,4 @@ exports.getPostCountByTag = async () => {
         throw error;
     }
 };
+
