@@ -33,6 +33,7 @@ router.get("/public/publishedPosts/tag/:tagId", controller.getAllPublishedPostsB
 router.get("/public/publishedPosts", controller.getAllPublishedPosts);
 router.get("/public/publishedPosts/:slug", controller.getAllPublishedPostsBySlug);
 
+router.get("/getAllCounts", middleware.verifyToken, controller.getAllCounts);
 
 
 module.exports = router;

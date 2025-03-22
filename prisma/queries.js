@@ -476,3 +476,30 @@ exports.getPostCountByTag = async () => {
         throw error;
     }
 };
+
+
+// Counts
+exports.getAllCounts = async () => {
+    const [
+        totalPosts,
+        publishedPosts,
+        totalLikes,
+        totalComments,
+      ] = await Promise.all([
+        prisma.post.count(),
+        prisma.post.count({
+          where: {
+            published: true,
+          },
+        }),
+        prisma.like.count(),
+        prisma.comment.count(),
+      ]);
+      
+      return {
+        totalPosts,
+        publishedPosts,
+        totalLikes,
+        totalComments,
+      };
+}
