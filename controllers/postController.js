@@ -436,11 +436,11 @@ const updatePostLikeCount = async (req, res, next) => {
 
 
 const getAllCounts = async(req, res, next) => {
-    jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
-        if(err) {
-            console.log("Error getting counts", err);
-            return res.sendStatus(403); 
-        } else { 
+    // jwt.verify(req.token, SECRET_KEY, async (err, authData) => {
+    //     if(err) {
+    //         console.log("Error getting counts", err);
+    //         return res.sendStatus(403); 
+    //     } else { 
             try { 
                 const counts = await db.getAllCounts(); 
                 return res.status(200).json({
@@ -451,8 +451,8 @@ const getAllCounts = async(req, res, next) => {
             } catch(err) {
                 return next(err);
             }
-        }
-    }) 
+    //     }
+    // }) 
 }
 
 module.exports = {

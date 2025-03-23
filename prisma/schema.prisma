@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(cuid())
   sid       String   @unique
   data      String   @db.VarChar(255)
   expiresAt DateTime

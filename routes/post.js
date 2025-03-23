@@ -4,6 +4,7 @@ const controller = require("../controllers/postController");
 const middleware = require("../middleware/user");
 
 
+router.get("/getAllCounts", controller.getAllCounts);
 router.get("/", middleware.verifyToken, controller.getAllPosts);
 router.post("/", middleware.verifyToken, controller.createPost);
 router.get("/:postId", middleware.verifyToken, controller.getPostById);
@@ -33,7 +34,7 @@ router.get("/public/publishedPosts/tag/:tagId", controller.getAllPublishedPostsB
 router.get("/public/publishedPosts", controller.getAllPublishedPosts);
 router.get("/public/publishedPosts/:slug", controller.getAllPublishedPostsBySlug);
 
-router.get("/getAllCounts", middleware.verifyToken, controller.getAllCounts);
+
 
 
 module.exports = router;

@@ -480,26 +480,9 @@ exports.getPostCountByTag = async () => {
 
 // Counts
 exports.getAllCounts = async () => {
-    const [
-        totalPosts,
-        publishedPosts,
-        totalLikes,
-        totalComments,
-      ] = await Promise.all([
-        prisma.post.count(),
-        prisma.post.count({
-          where: {
-            published: true,
-          },
-        }),
-        prisma.like.count(),
-        prisma.comment.count(),
-      ]);
-      
-      return {
-        totalPosts,
-        publishedPosts,
-        totalLikes,
-        totalComments,
-      };
+    const totalPostCount = await prisma.post.count(); 
+    const publishedPosts = await prisma.post.count({where: {published: true}})
+    const totalComments = await prisma.comment.count();
+    const totalLikes = await prisma.post.aggregate({_sum: {numberOfLikes: true}, where: {published: true}})
+    return { totalPostCount, publishedPosts, totalComments, totalLikes} ;
 }
