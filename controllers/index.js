@@ -6,7 +6,7 @@ const createSitemap = async (req, res) => {
     try { 
         const posts = await db.findAllPublishedPosts(1, 1000); 
 
-        const postLinks = posts.map(post => ({
+        const postLinks = posts.data.map(post => ({
             url: `/post/${post.slug}`,
             changefreq: 'weekly', 
             priority: 0.8, 
