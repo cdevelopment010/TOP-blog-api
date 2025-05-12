@@ -231,20 +231,31 @@ const getAllPublishedPostsByTag = async(req, res, next) => {
 const getAllPublishedPostsBySlug = async(req, res, next) => {
     const { slug } = req.params;
 
-    await db.findAllPublishedPostsBySlug(slug)
-    .then(posts => {
-        return res.status(200).json({
-            success: true, 
-            message: 'Posts', 
-            data: posts
-        })
-    })
-    .catch(err => {
-        return res.status(400).json({
+    try { 
+        const posts = await db.findAllPublishedPostsBySlug(slug);
+
+        if (!posts || posts.length == 0) {
+            return res.status(404).json({
+                success: false, 
+                message: 'Posts', 
+                data: []
+            })
+        } else { 
+            return res.status(200).json({
+                success: true, 
+                message: 'Posts', 
+                data: posts
+            })
+        }
+
+
+    } catch (error) {
+        return res.status(500).json({
             success: false, 
-            message: err.message,
+            message: error.message,
         })
-    })
+    }
+    
 }
 const getAllRecentPublishedPosts = async(req, res, next) => {
     const { recentNumber } = req.params;
