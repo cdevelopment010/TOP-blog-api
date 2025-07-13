@@ -1,11 +1,6 @@
 const db = require("../prisma/queries"); 
 const { SitemapStream, streamToPromise } = require("sitemap");
 const { Readable } = require("stream");
-const { Octokit } = require("@octokit/core");
-
-const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN
-})
 
 const createSitemap = async (req, res) => {
     try { 
@@ -45,15 +40,19 @@ const submitFeedback = async(req, res) => {
     const { title, body, labels } = req.body; 
 
     try { 
-        const response = await octokit.request("POST /repos/{owner}/{repo}/issues", {
-            owner: process.env.GITHUB_OWNER, 
-            repo: process.env.GITHUB_REPO,
-            title,
-            body, 
-            labels,
+        const response = await fetch(`https://api.github.com/repos/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/issues`, {
+            method: 'POST',
             headers: {
-                "X-GitHub-Api-Version": "2022-11-28"
-            }
+                "Authorization": `Bearer ${process.env.GITHUB_TOKEN}`,
+                "Accept": "application/vnd.github+json",
+                "X-GitHub-Api-Version": "2022-11-28",
+                "Content-Type": "application/json"
+            }, 
+            body: JSON.stringify({
+                title, 
+                body, 
+                labels
+            })
         }); 
 
         res.status(200).json({
