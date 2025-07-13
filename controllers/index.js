@@ -1,6 +1,11 @@
 const db = require("../prisma/queries"); 
 const { SitemapStream, streamToPromise } = require("sitemap");
 const { Readable } = require("stream");
+const { Octokit } = require("@octokit/core");
+
+const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN
+})
 
 const createSitemap = async (req, res) => {
     try { 
@@ -10,7 +15,7 @@ const createSitemap = async (req, res) => {
             url: `/post/${post.slug}`,
             changefreq: 'weekly', 
             priority: 0.8, 
-            lastmod: post.updated_ad || post.created_at,
+            lastmod: post.updated_at || post.created_at,
         }))
 
         //static urls;
@@ -36,6 +41,33 @@ const createSitemap = async (req, res) => {
     }
 } 
 
+const submitFeedback = async(req, res) => {
+    const { title, body, labels } = req.body; 
+
+    try { 
+        const response = await octokit.request("POST /repos/{owner}/{repo}/issues", {
+            owner: process.env.GITHUB_OWNER, 
+            repo: process.env.GITHUB_REPO,
+            title,
+            body, 
+            labels,
+            headers: {
+                "X-GitHub-Api-Version": "2022-11-28"
+            }
+        }); 
+
+        res.status(200).json({
+            success: true, 
+            message: "Issue created successfully.",
+            issueUrl: response.data.html_url
+        })
+    } catch (err) {
+        console.error("GitHub issue creation error:", err);
+        res.status(500).json({message: "Failed to create GitHub issue."})
+    }
+}
+
 module.exports = { 
-    createSitemap
+    createSitemap, 
+    submitFeedback
 }
