@@ -55,10 +55,12 @@ const submitFeedback = async(req, res) => {
             })
         }); 
 
+        const data = await reposonse.json(); 
+
         res.status(200).json({
             success: true, 
             message: "Issue created successfully.",
-            issueUrl: response.data.html_url
+            issueUrl: data.html_url
         })
     } catch (err) {
         console.error("GitHub issue creation error:", err);
