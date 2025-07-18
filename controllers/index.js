@@ -55,7 +55,7 @@ const submitFeedback = async(req, res) => {
             })
         }); 
 
-        const data = await reposonse.json(); 
+        const data = await response.json(); 
 
         res.status(200).json({
             success: true, 
