@@ -39,6 +39,7 @@ const createSitemap = async (req, res) => {
 const submitFeedback = async(req, res) => {
     const { title, body, labels } = req.body; 
 
+    let updatedTitle = `FeedbackForm: ${title}`;
     try { 
         const response = await fetch(`https://api.github.com/repos/${process.env.GITHUB_OWNER}/${process.env.GITHUB_REPO}/issues`, {
             method: 'POST',
@@ -49,7 +50,7 @@ const submitFeedback = async(req, res) => {
                 "Content-Type": "application/json"
             }, 
             body: JSON.stringify({
-                title, 
+                title: updatedTitle, 
                 body, 
                 labels
             })
