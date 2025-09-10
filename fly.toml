@@ -6,7 +6,7 @@
 # Change primary_region = 'lhr' once fly.io issue has been resolved. 
 
 app = 'top-blog-api-proud-thunder-6960'
-primary_region = 'ams'
+primary_region = 'lhr'
 
 [build]
   dockerfile = "Dockerfile"
